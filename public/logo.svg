@@ -1,0 +1,72 @@
+<svg width="768" height="768" viewBox="0 0 768 768" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logo-top-left" x1="384" y1="110" x2="165" y2="282" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFB319" />
+      <stop offset="0.52" stop-color="#FF9806" />
+      <stop offset="1" stop-color="#F27B00" />
+    </linearGradient>
+    <linearGradient id="logo-top-right" x1="384" y1="110" x2="603" y2="282" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFD04A" />
+      <stop offset="0.5" stop-color="#FFB41B" />
+      <stop offset="1" stop-color="#E28C00" />
+    </linearGradient>
+    <linearGradient id="logo-inner-left" x1="284" y1="291" x2="411" y2="428" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#C87500" />
+      <stop offset="1" stop-color="#F0A300" />
+    </linearGradient>
+    <linearGradient id="logo-inner-right" x1="470" y1="291" x2="357" y2="428" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFBF1F" />
+      <stop offset="1" stop-color="#D38200" />
+    </linearGradient>
+    <linearGradient id="logo-body-left" x1="122" y1="245" x2="384" y2="678" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0E6075" />
+      <stop offset="1" stop-color="#0A3342" />
+    </linearGradient>
+    <linearGradient id="logo-body-right" x1="646" y1="245" x2="384" y2="678" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#177F93" />
+      <stop offset="1" stop-color="#114C5C" />
+    </linearGradient>
+    <linearGradient id="logo-floor" x1="384" y1="357" x2="384" y2="500" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2D7E8E" />
+      <stop offset="1" stop-color="#144956" />
+    </linearGradient>
+    <filter id="logo-orange-glow" x="42" y="30" width="684" height="367" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="6"/>
+      <feGaussianBlur stdDeviation="32"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.992157 0 0 0 0 0.619608 0 0 0 0 0.0235294 0 0 0 0.72 0"/>
+      <feBlend mode="screen" in2="BackgroundImageFix" result="effect1_dropShadow_1_1"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_1" result="shape"/>
+    </filter>
+    <filter id="logo-blue-glow" x="42" y="165" width="684" height="583" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="14"/>
+      <feGaussianBlur stdDeviation="34"/>
+      <feComposite in2="hardAlpha" operator="out"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.0470588 0 0 0 0 0.705882 0 0 0 0 0.847059 0 0 0 0.45 0"/>
+      <feBlend mode="screen" in2="BackgroundImageFix" result="effect1_dropShadow_1_1"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_1" result="shape"/>
+    </filter>
+  </defs>
+
+  <g filter="url(#logo-orange-glow)">
+    <path d="M384 110L122 245L247 317L384 246V110Z" fill="url(#logo-top-left)" />
+    <path d="M384 110L646 245L521 317L384 246V110Z" fill="url(#logo-top-right)" />
+    <path d="M247 317L384 246V357L247 429V317Z" fill="url(#logo-inner-left)" />
+    <path d="M384 246L521 317V429L384 357V246Z" fill="url(#logo-inner-right)" />
+  </g>
+
+  <g filter="url(#logo-blue-glow)">
+    <path d="M122 245L247 317V429L384 500V678L122 545V245Z" fill="url(#logo-body-left)" />
+    <path d="M646 245L521 317V429L384 500V678L646 545V245Z" fill="url(#logo-body-right)" />
+    <path d="M384 357L247 429L384 500L521 429L384 357Z" fill="url(#logo-floor)" />
+  </g>
+
+  <path d="M384 110L122 245" stroke="#FFFFFF" stroke-opacity="0.12" stroke-width="3" stroke-linecap="round" />
+  <path d="M384 110L646 245" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="3" stroke-linecap="round" />
+  <path d="M122 245L122 545L384 678" stroke="#000000" stroke-opacity="0.22" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M646 245L646 545L384 678" stroke="#000000" stroke-opacity="0.22" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

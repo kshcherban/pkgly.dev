@@ -78,6 +78,7 @@ export const siteContent = {
     "Go",
     "Debian",
     "PHP Composer",
+    "Nuget",
   ],
   pillars: [
     {
@@ -164,7 +165,7 @@ export const siteContent = {
     },
     {
       label: "Mixed ecosystem support",
-      pkgly: "npm, Docker, Helm, Maven, Python, Cargo, Go, Debian, PHP Composer, RubyGems",
+      pkgly: "Major package types",
       artifactory: "40+ technologies",
       nexus: "20+ formats",
       repoflow: "Major package types",
@@ -177,7 +178,7 @@ export const siteContent = {
       "git clone https://github.com/kshcherban/pkgly.git",
       "cd pkgly",
       "docker compose up --build --detach",
-      "open http://localhost:6742",
+      "open http://localhost:8000/admin/install",
     ],
   },
   footerLinks: [

@@ -242,7 +242,7 @@ export function renderLandingPage(root: HTMLElement) {
             data-zoom-alt="${demo.alt}"
             data-zoom-title="${demo.title}"
             aria-label="Open screenshot for ${demo.title}">
-            <img src="${demo.image}" alt="${demo.alt}" loading="lazy" />
+            <img src="${demo.previewImage}" alt="${demo.alt}" loading="lazy" decoding="async" />
             <span class="demo-card__zoom-label">Zoom screenshot</span>
           </button>
         </article>
@@ -294,7 +294,7 @@ export function renderLandingPage(root: HTMLElement) {
     <div class="page-shell">
       <header class="site-header">
         <a class="wordmark" href="#top" aria-label="${siteContent.hero.wordmark}">
-          <img src="/logo.png" alt="pkgly logo" class="wordmark__image" />
+          <img src="/logo.webp" alt="pkgly logo" class="wordmark__image" width="256" height="256" />
         </a>
         <div class="site-header__actions">
           <nav class="header-nav" aria-label="Primary">
@@ -323,13 +323,15 @@ export function renderLandingPage(root: HTMLElement) {
               <button
                 class="hero__zoom"
                 type="button"
-                data-zoom-src="/images/overview.png"
-                data-zoom-alt="Pkgly repository overview UI"
-                data-zoom-title="Pkgly repository overview"
+                data-zoom-src="${siteContent.hero.screenshot.image}"
+                data-zoom-alt="${siteContent.hero.screenshot.alt}"
+                data-zoom-title="${siteContent.hero.screenshot.title}"
                 aria-label="Open hero screenshot preview">
                 <img
-                  src="/images/overview.png"
-                  alt="Pkgly repository overview UI"
+                  src="${siteContent.hero.screenshot.previewImage}"
+                  alt="${siteContent.hero.screenshot.alt}"
+                  fetchpriority="high"
+                  decoding="async"
                   class="hero__image" />
                 <span class="hero__zoom-label">Zoom screenshot</span>
               </button>
@@ -452,7 +454,12 @@ export function renderLandingPage(root: HTMLElement) {
 
       <footer class="site-footer">
         <span class="site-footer__brand">
-          <img src="/logo.png" alt="pkgly logo" class="wordmark__image wordmark__image--footer" />
+          <img
+            src="/logo.webp"
+            alt="pkgly logo"
+            class="wordmark__image wordmark__image--footer"
+            width="256"
+            height="256" />
         </span>
         <nav class="footer-nav" aria-label="Footer">
           ${footerLinks}

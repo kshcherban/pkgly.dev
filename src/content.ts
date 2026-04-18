@@ -8,6 +8,7 @@ export type DemoCard = {
   title: string;
   body: string;
   image: string;
+  previewImage: string;
   alt: string;
 };
 
@@ -40,6 +41,12 @@ export const siteContent = {
     title: "Own your packages",
     subtitle:
       "Pkgly is the open-source repository manager for public and private packages. Run npm, Docker, Helm, Maven, Python, Cargo, and more from one fast, self-hosted control plane.",
+    screenshot: {
+      image: "/images/overview.png",
+      previewImage: "/images/previews/overview.webp",
+      alt: "Pkgly repository overview UI",
+      title: "Pkgly repository overview",
+    },
     primaryCta: {
       label: "Star on GitHub",
       href: "https://github.com/kshcherban/pkgly",
@@ -146,6 +153,7 @@ export const siteContent = {
       title: "Find packages without hunting through storage paths",
       body: "Search packages, tags, and metadata from one UI instead of sending users into repo-specific dead ends.",
       image: "/images/search-view.png",
+      previewImage: "/images/previews/search-view.webp",
       alt: "Pkgly package search view",
     },
     {
@@ -153,6 +161,7 @@ export const siteContent = {
       title: "Browse hosted and proxy repositories from one control plane",
       body: "Show developers the repositories they need, while platform teams keep storage, auth, and repository behavior under control.",
       image: "/images/repository-view.png",
+      previewImage: "/images/previews/repository-view.webp",
       alt: "Pkgly repository detail view",
     },
     {
@@ -160,6 +169,7 @@ export const siteContent = {
       title: "Manage repositories, packages, and users without the usual bloat",
       body: "Repository setup, package visibility, and user administration live in one UI with a modern workflow instead of an archaeology dig.",
       image: "/images/admin-repositories.png",
+      previewImage: "/images/previews/admin-repositories.webp",
       alt: "Pkgly admin repository management view",
     },
   ] satisfies DemoCard[],

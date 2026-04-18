@@ -125,6 +125,20 @@ describe("renderLandingPage", () => {
     expect(lightboxCaption.textContent).toContain("Pkgly repository overview");
   });
 
+  it("uses compressed preview assets inline and keeps the original screenshot for zoom", () => {
+    setupPage();
+
+    const heroImage = document.querySelector<HTMLImageElement>(".hero__image");
+    const heroZoom = document.querySelector<HTMLButtonElement>(".hero__zoom");
+    const demoImage = document.querySelector<HTMLImageElement>(".demo-card__zoom img");
+    const demoZoom = document.querySelector<HTMLButtonElement>(".demo-card__zoom");
+
+    expect(heroImage?.getAttribute("src")).toBe(siteContent.hero.screenshot.previewImage);
+    expect(heroZoom?.getAttribute("data-zoom-src")).toBe(siteContent.hero.screenshot.image);
+    expect(demoImage?.getAttribute("src")).toBe(siteContent.demoCards[0]?.previewImage);
+    expect(demoZoom?.getAttribute("data-zoom-src")).toBe(siteContent.demoCards[0]?.image);
+  });
+
   it("toggles between dark and light themes", () => {
     setupPage();
 
@@ -183,14 +197,14 @@ describe("renderLandingPage", () => {
     expect(heroButtons.length).toBeGreaterThanOrEqual(2);
   });
 
-  it("renders the raster logo asset in the header and footer", () => {
+  it("renders the optimized logo asset in the header and footer", () => {
     setupPage();
 
     const logos = Array.from(document.querySelectorAll<HTMLImageElement>(".wordmark__image"));
     expect(logos.length).toBe(2);
 
     for (const logo of logos) {
-      expect(logo.getAttribute("src")).toBe("/logo.png");
+      expect(logo.getAttribute("src")).toBe("/logo.webp");
     }
   });
 

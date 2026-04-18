@@ -113,6 +113,33 @@ function renderCta(
   `;
 }
 
+function renderArchitectureNode(
+  node: {
+    label: string;
+    title: string;
+    body: string;
+    items?: string[];
+  },
+  className = "",
+) {
+  const items = node.items
+    ? `
+      <ul class="architecture-node__items">
+        ${node.items.map((item) => `<li>${item}</li>`).join("")}
+      </ul>
+    `
+    : "";
+
+  return `
+    <article class="architecture-node ${className}">
+      <p class="architecture-node__label">${node.label}</p>
+      <h3>${node.title}</h3>
+      <p>${node.body}</p>
+      ${items}
+    </article>
+  `;
+}
+
 function getStoredTheme() {
   const storage = window.localStorage as { getItem?: (key: string) => string | null } | undefined;
 
@@ -250,6 +277,10 @@ export function renderLandingPage(root: HTMLElement) {
     )
     .join("");
 
+  const architectureStores = siteContent.architecture.stores
+    .map((store) => renderArchitectureNode(store, "architecture-node--store"))
+    .join("");
+
   const quickstartCommands = siteContent.quickstart.commands.join("\n");
   const footerLinks = siteContent.footerLinks
     .map(
@@ -267,6 +298,7 @@ export function renderLandingPage(root: HTMLElement) {
         </a>
         <div class="site-header__actions">
           <nav class="header-nav" aria-label="Primary">
+            <a class="header-link" href="#architecture">Architecture</a>
             <a class="header-link" href="#comparison">Compare</a>
             <a class="header-link" href="#quickstart">Quickstart</a>
           </nav>
@@ -311,6 +343,21 @@ export function renderLandingPage(root: HTMLElement) {
             <h2>One repository manager for the package types people actually use</h2>
           </div>
           <ul class="package-strip" aria-label="Supported package ecosystems">${packageTypes}</ul>
+        </section>
+
+        <section class="section section--alt" id="architecture">
+          <div class="section-heading">
+            <p class="eyebrow">${siteContent.architecture.label}</p>
+            <h2>${siteContent.architecture.title}</h2>
+            <p>${siteContent.architecture.body}</p>
+          </div>
+          <div class="architecture-diagram" aria-label="Pkgly architecture diagram">
+            ${renderArchitectureNode(siteContent.architecture.clients, "architecture-node--client")}
+            <div class="architecture-arrow" aria-hidden="true">API / registry traffic</div>
+            ${renderArchitectureNode(siteContent.architecture.app, "architecture-node--app")}
+            <div class="architecture-arrow architecture-arrow--split" aria-hidden="true">state + artifacts</div>
+            <div class="architecture-stores">${architectureStores}</div>
+          </div>
         </section>
 
         <section class="section section--alt">

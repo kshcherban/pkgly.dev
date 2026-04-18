@@ -27,6 +27,13 @@ export type Spotlight = {
   benchmarkDetail: string;
 };
 
+export type ArchitectureNode = {
+  label: string;
+  title: string;
+  body: string;
+  items?: string[];
+};
+
 export const siteContent = {
   hero: {
     wordmark: "pkgly",
@@ -80,6 +87,41 @@ export const siteContent = {
     "PHP Composer",
     "Nuget",
   ],
+  architecture: {
+    label: "Architecture",
+    title: "Small surface area, clear storage boundaries",
+    body: "Pkgly runs as a Rust application with the Vue.js frontend embedded in the server. Runtime state lives in PostgreSQL, while package artifacts are stored on local disk or S3.",
+    clients: {
+      label: "Clients",
+      title: "Developers, CI, and browsers",
+      body: "Package managers, automation, and admins connect to one pkgly endpoint.",
+    },
+    app: {
+      label: "Runtime",
+      title: "Rust app",
+      body: "Serves registry traffic, API requests, and the embedded Vue.js frontend from one deployable service.",
+      items: ["Registry APIs", "Embedded Vue.js frontend", "Auth and repository rules"],
+    },
+    stores: [
+      {
+        label: "State",
+        title: "PostgreSQL",
+        body: "Users, repositories, permissions, package metadata, and application state.",
+      },
+      {
+        label: "Artifacts",
+        title: "Local disk or S3",
+        body: "Package blobs and cached artifacts stay in the storage backend you choose.",
+      },
+    ],
+  } satisfies {
+    label: string;
+    title: string;
+    body: string;
+    clients: ArchitectureNode;
+    app: ArchitectureNode;
+    stores: ArchitectureNode[];
+  },
   pillars: [
     {
       title: "Open-source by default",
@@ -173,7 +215,7 @@ export const siteContent = {
   ],
   quickstart: {
     title: "Get a working instance up fast",
-    body: "The first version of pkgly.dev should convert curiosity into a running install. Keep the path short and make the docs one click away.",
+    body: "Just run a docker compose command and open the UI to get a working instance of Pkgly up in minutes.",
     commands: [
       "git clone https://github.com/kshcherban/pkgly.git",
       "cd pkgly",

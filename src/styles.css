@@ -208,7 +208,8 @@ img {
 .pillar-card h3,
 .demo-card h3,
 .competitor-card h3,
-.spotlight-card h3 {
+.spotlight-card h3,
+.architecture-node h3 {
   font-family: "Space Grotesk", "IBM Plex Sans", sans-serif;
   line-height: 0.95;
   letter-spacing: -0.04em;
@@ -228,7 +229,9 @@ img {
 .source-note,
 .spotlight-card li,
 .spotlight-card small,
-.spotlight-card span {
+.spotlight-card span,
+.architecture-node p,
+.architecture-node li {
   color: var(--muted);
 }
 
@@ -519,9 +522,84 @@ img {
 }
 
 .demo-grid,
-.competitor-grid {
+.competitor-grid,
+.architecture-stores {
   display: grid;
   gap: 20px;
+}
+
+.architecture-diagram {
+  display: grid;
+  grid-template-columns: minmax(180px, 0.8fr) auto minmax(260px, 1fr) auto minmax(220px, 0.9fr);
+  gap: 18px;
+  align-items: center;
+}
+
+.architecture-node {
+  min-height: 100%;
+  padding: 20px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--bg) 72%, transparent);
+}
+
+.architecture-node--app {
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--accent) 12%, transparent), transparent),
+    color-mix(in srgb, var(--surface-strong) 86%, transparent);
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--border));
+}
+
+.architecture-node__label {
+  margin: 0 0 10px;
+  color: var(--accent-strong);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.architecture-node h3 {
+  font-size: 1.7rem;
+}
+
+.architecture-node p:not(.architecture-node__label) {
+  margin: 12px 0 0;
+}
+
+.architecture-node__items {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0;
+  margin: 18px 0 0;
+}
+
+.architecture-node__items li {
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-muted);
+  font-size: 0.9rem;
+}
+
+.architecture-arrow {
+  min-width: 100px;
+  text-align: center;
+  color: var(--accent-strong);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.architecture-arrow::after {
+  content: "";
+  display: block;
+  height: 1px;
+  margin-top: 10px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-strong));
 }
 
 .demo-grid {
@@ -767,7 +845,8 @@ img {
   .demo-grid,
   .competitor-grid,
   .why-grid,
-  .pillar-grid {
+  .pillar-grid,
+  .architecture-diagram {
     grid-template-columns: 1fr;
     flex-direction: column;
     align-items: stretch;
@@ -784,6 +863,17 @@ img {
 
   .spotlight-card {
     position: static;
+  }
+
+  .architecture-arrow {
+    min-width: 0;
+  }
+
+  .architecture-arrow::after {
+    width: 1px;
+    height: 34px;
+    margin: 10px auto 0;
+    background: linear-gradient(180deg, var(--accent), var(--accent-strong));
   }
 }
 

@@ -63,6 +63,17 @@ describe("renderLandingPage", () => {
     expect(document.body.textContent).toContain("Run npm, Docker, Helm, Maven, Python, Cargo, and more");
   });
 
+  it("renders the architecture overview with runtime and storage components", () => {
+    setupPage();
+
+    const architecture = document.querySelector("#architecture");
+    expect(architecture).not.toBeNull();
+    expect(architecture?.textContent).toContain("Rust app");
+    expect(architecture?.textContent).toContain("Embedded Vue.js frontend");
+    expect(architecture?.textContent).toContain("PostgreSQL");
+    expect(architecture?.textContent).toContain("Local disk or S3");
+  });
+
   it("removes trailing periods from headings", () => {
     setupPage();
 

@@ -229,7 +229,7 @@ export const siteContent = {
     commands: [
       "git clone https://github.com/kshcherban/pkgly.git",
       "cd pkgly",
-      "docker compose up --build --detach",
+      "docker compose up --detach",
       "open http://localhost:8000/admin/install",
     ],
   },

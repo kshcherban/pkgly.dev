@@ -281,7 +281,13 @@ export function renderLandingPage(root: HTMLElement) {
     .map((store) => renderArchitectureNode(store, "architecture-node--store"))
     .join("");
 
-  const quickstartCommands = siteContent.quickstart.commands.join("\n");
+  const quickstartLines = siteContent.quickstart.commands
+    .map(
+      (cmd) =>
+        `<span class="terminal__prompt" aria-hidden="true">% </span><span class="terminal__cmd">${cmd}</span>`,
+    )
+    .join("\n");
+  const quickstartCopyText = siteContent.quickstart.commands.join("\n");
   const footerLinks = siteContent.footerLinks
     .map(
       (link) => `
@@ -436,7 +442,18 @@ export function renderLandingPage(root: HTMLElement) {
                 )}
               </div>
             </div>
-            <pre class="code-block"><code>${quickstartCommands}</code></pre>
+            <div class="terminal">
+              <div class="terminal__bar">
+                <span class="terminal__dot terminal__dot--close"></span>
+                <span class="terminal__dot terminal__dot--minimize"></span>
+                <span class="terminal__dot terminal__dot--maximize"></span>
+                <span class="terminal__title">Terminal</span>
+                <button class="terminal__copy" data-copy-terminal aria-label="Copy commands">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </button>
+              </div>
+              <pre class="terminal__body"><code>${quickstartLines}</code></pre>
+            </div>
           </div>
         </section>
       </main>
@@ -506,6 +523,16 @@ export function renderLandingPage(root: HTMLElement) {
       lightboxImage.src = "";
       lightboxImage.alt = "";
       lightboxCaption.textContent = "";
+    });
+  });
+
+  root.querySelectorAll<HTMLButtonElement>("[data-copy-terminal]").forEach((button) => {
+    button.addEventListener("click", () => {
+      navigator.clipboard.writeText(quickstartCopyText);
+      button.dataset.copied = "true";
+      setTimeout(() => {
+        delete button.dataset.copied;
+      }, 2000);
     });
   });
 }

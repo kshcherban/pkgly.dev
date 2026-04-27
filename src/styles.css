@@ -756,15 +756,122 @@ img {
   padding: 28px;
 }
 
-.code-block {
-  margin: 0;
-  overflow-x: auto;
-  border-radius: 22px;
+.terminal {
+  overflow: hidden;
+  border-radius: 12px;
   border: 1px solid var(--border);
-  background: var(--surface-strong);
-  padding: 24px;
+  background: #1e1e1e;
   font-family: "IBM Plex Mono", "SFMono-Regular", monospace;
-  color: var(--accent-strong);
+}
+
+.terminal__bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #2d2d2d;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.terminal__dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.terminal__dot--close {
+  background: #ff5f57;
+}
+
+.terminal__dot--minimize {
+  background: #febc2e;
+}
+
+.terminal__dot--maximize {
+  background: #28c840;
+}
+
+.terminal__title {
+  flex: 1;
+  text-align: center;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.44);
+  letter-spacing: 0.01em;
+}
+
+.terminal__copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.36);
+  border-radius: 4px;
+  transition: color 0.15s, background 0.15s;
+}
+
+.terminal__copy:hover {
+  color: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.terminal__copy[data-copied] {
+  color: #28c840;
+}
+
+.terminal__body {
+  margin: 0;
+  padding: 20px 18px;
+  overflow-x: auto;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: #e6edf3;
+}
+
+.terminal__prompt {
+  color: #28c840;
+  user-select: none;
+}
+
+.terminal__cmd {
+  color: #e6edf3;
+}
+
+:root[data-theme="light"] .terminal {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.12);
+}
+
+:root[data-theme="light"] .terminal__bar {
+  background: #e8e8e8;
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+
+:root[data-theme="light"] .terminal__title {
+  color: rgba(0, 0, 0, 0.44);
+}
+
+:root[data-theme="light"] .terminal__body {
+  color: #1a1a1a;
+}
+
+:root[data-theme="light"] .terminal__cmd {
+  color: #1a1a1a;
+}
+
+:root[data-theme="light"] .terminal__copy {
+  color: rgba(0, 0, 0, 0.3);
+}
+
+:root[data-theme="light"] .terminal__copy:hover {
+  color: rgba(0, 0, 0, 0.65);
+  background: rgba(0, 0, 0, 0.06);
+}
+
+:root[data-theme="light"] .terminal__copy[data-copied] {
+  color: #28c840;
 }
 
 .competitor-card a {

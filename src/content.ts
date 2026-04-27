@@ -38,9 +38,9 @@ export type ArchitectureNode = {
 export const siteContent = {
   hero: {
     wordmark: "pkgly",
-    title: "Own your packages",
+    title: "Pkgly: The Open-Source Artifact Manager",
     subtitle:
-      "Pkgly is the open-source repository manager for public and private packages. Run npm, Docker, Helm, Maven, Python, Cargo, and more from one fast, self-hosted control plane.",
+      "The self-hosted package registry for public and private packages. Manage all your artifacts with an open-source artifact management solution.",
     screenshot: {
       image: "/images/overview.png",
       previewImage: "/images/previews/overview.webp",
@@ -132,15 +132,15 @@ export const siteContent = {
   pillars: [
     {
       title: "Open-source by default",
-      body: "Run it without a self-hosted license bill and keep full control over your packages, infrastructure, and upgrade path.",
+      body: "Run it without a self-hosted license bill and keep full control over your packages, infrastructure, and upgrade path. This is the core of open-source artifact management.",
     },
     {
       title: "One home for mixed ecosystems",
-      body: "Manage public and private packages across the ecosystems teams actually use instead of bolting together multiple single-purpose registries.",
+      body: "Manage public and private packages across the ecosystems teams actually use instead of bolting together multiple single-purpose registries. Centralize your self-hosted package registry.",
     },
     {
       title: "Enterprise features without enterprise drag",
-      body: "Ship with token auth, SSO support, audit logging, search, and S3-backed storage without inheriting a bloated operator experience.",
+      body: "Ship with token auth, SSO support, audit logging, search, and S3-backed storage without inheriting a bloated operator experience. Enterprise features for your self-hosted package registry.",
     },
     {
       title: "Built for real workloads",

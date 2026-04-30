@@ -1,4 +1,6 @@
 <!doctype html>
+<!-- ABOUTME: Static HTML shell for the pkgly landing page. -->
+<!-- ABOUTME: Provides crawlable SEO metadata and noscript fallback content. -->
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -7,18 +9,51 @@
       content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="pkgly is the open-source repository manager for public and private packages." />
+      content="Open-source self-hosted package registry and artifact manager for npm, Docker, Maven, Python, Cargo, NuGet, S3 storage, ACLs, SSO, cleanup policies, webhooks, and more." />
+    <meta
+      name="keywords"
+      content="self-hosted package registry, open-source artifact manager, Artifactory alternative, Nexus alternative, RepoFlow alternative, npm registry, Docker registry, Maven repository, PyPI repository" />
+    <meta name="robots" content="index, follow" />
     <meta name="theme-color" content="#07120e" />
+    <link rel="canonical" href="https://pkgly.dev/" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:title" content="pkgly - Open-source self-hosted package registry" />
+    <meta property="og:description" content="Open-source self-hosted package registry and artifact manager for npm, Docker, Maven, Python, Cargo, NuGet, S3 storage, ACLs, SSO, cleanup policies, webhooks, and more." />
+    <meta property="og:url" content="https://pkgly.dev/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="pkgly" />
+    <meta property="og:image" content="https://pkgly.dev/images/og-card.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="pkgly - Open-source self-hosted package registry" />
+    <meta name="twitter:description" content="Open-source self-hosted package registry and artifact manager for npm, Docker, Maven, Python, Cargo, NuGet, S3 storage, ACLs, SSO, cleanup policies, webhooks, and more." />
+    <meta name="twitter:image" content="https://pkgly.dev/images/og-card.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap"
       rel="stylesheet" />
-    <title>pkgly</title>
+    <title>pkgly - Open-source self-hosted package registry</title>
   </head>
   <body>
     <div id="app"></div>
+    <noscript>
+      <h1>pkgly - Open-source self-hosted package registry</h1>
+      <p>Manage public and private packages across npm, Docker, Maven, Python, and more with hosted, proxy, and virtual repositories, S3 storage, ACLs, and SSO.</p>
+      <ul>
+        <li>Free and open source</li>
+        <li>10+ package ecosystems</li>
+        <li>Hosted + proxy + virtual repositories</li>
+        <li>S3 storage with local disk caching</li>
+        <li>Users, ACLs, and repository permissions</li>
+        <li>SSO support</li>
+        <li>Repository cleanup policies</li>
+        <li>Webhooks for packages</li>
+        <li>Pkgly CLI</li>
+      </ul>
+      <h2>Pkgly compared with Artifactory, Nexus, and RepoFlow</h2>
+      <p>Pkgly is a free open-source self-hosted package registry alternative with hosted, proxy, and virtual repositories, S3 storage, SSO, audit logging, retention policies, package webhooks, and an Artifactory migration script.</p>
+      <p><a href="https://github.com/kshcherban/pkgly">Star on GitHub</a> | <a href="https://docs.pkgly.dev">Read docs</a> | <a href="https://docs.pkgly.dev/quickstart.html">Quickstart</a></p>
+    </noscript>
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>

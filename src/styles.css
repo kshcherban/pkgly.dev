@@ -1,3 +1,5 @@
+/* ABOUTME: Styles the pkgly marketing landing page and responsive UI sections. */
+/* ABOUTME: Defines theme tokens, layout, cards, comparison table, and interactions. */
 :root {
   color-scheme: dark;
   --page-bg:
@@ -196,9 +198,9 @@ img {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(0, 1.18fr) minmax(320px, 0.82fr);
-  gap: 32px;
-  align-items: center;
+  grid-template-columns: minmax(0, 0.98fr) minmax(420px, 1.02fr);
+  gap: 40px;
+  align-items: start;
   padding-top: 28px;
 }
 
@@ -217,7 +219,7 @@ img {
 }
 
 .hero__copy h1 {
-  font-size: clamp(3.3rem, 8vw, 6.4rem);
+  font-size: clamp(3.1rem, 6.2vw, 5.45rem);
 }
 
 .hero__subtitle,
@@ -247,6 +249,7 @@ img {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: stretch;
+  gap: 12px;
 }
 
 .button {
@@ -280,10 +283,10 @@ img {
   min-height: 96px;
   min-width: 0;
   width: 100%;
-  padding: 16px 20px;
+  padding: 16px 18px;
   border-radius: 28px;
   justify-content: flex-start;
-  gap: 16px;
+  gap: 14px;
   background: color-mix(in srgb, var(--surface-strong) 88%, transparent);
   overflow: hidden;
   position: relative;
@@ -327,8 +330,8 @@ img {
 }
 
 .button__icon {
-  width: 48px;
-  height: 48px;
+  width: 46px;
+  height: 46px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -385,7 +388,7 @@ img {
 }
 
 .hero__actions--hero .button__copy strong {
-  font-size: clamp(0.92rem, 1.08vw, 1.18rem);
+  font-size: clamp(0.9rem, 0.98vw, 1.08rem);
 }
 
 .hero__actions--hero .button__copy span {
@@ -411,6 +414,12 @@ img {
   margin-top: 20px;
 }
 
+.chip-list--hero {
+  justify-content: flex-start;
+  width: min(100%, 690px);
+  margin-top: 18px;
+}
+
 .chip-list__item,
 .package-strip__item {
   border: 1px solid var(--border);
@@ -419,8 +428,10 @@ img {
 }
 
 .chip-list__item {
-  padding: 8px 12px;
+  padding: 5px 10px;
   color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.2;
 }
 
 .package-strip__item {
@@ -431,10 +442,11 @@ img {
 }
 
 .hero__visual {
-  min-height: 420px;
+  min-height: auto;
   display: flex;
-  align-items: center;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 .hero__frame,
@@ -450,7 +462,7 @@ img {
 }
 
 .hero__frame {
-  width: min(100%, 560px);
+  width: min(100%, 690px);
   padding: 14px;
   background:
     linear-gradient(180deg, color-mix(in srgb, var(--bg-alt) 92%, transparent), color-mix(in srgb, var(--bg) 96%, transparent)),

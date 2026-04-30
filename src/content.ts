@@ -1,3 +1,5 @@
+// ABOUTME: Defines landing page copy, product claims, SEO fields, and links.
+// ABOUTME: Keeps comparison data centralized so rendering stays simple.
 export type Cta = {
   label: string;
   href: string;
@@ -36,11 +38,20 @@ export type ArchitectureNode = {
 };
 
 export const siteContent = {
+  seo: {
+    title: "pkgly - Open-source self-hosted package registry",
+    description:
+      "Open-source self-hosted package registry and artifact manager for npm, Docker, Maven, Python, Cargo, NuGet, S3 storage, ACLs, SSO, cleanup policies, webhooks, and more.",
+    keywords:
+      "self-hosted package registry, open-source artifact manager, Artifactory alternative, Nexus alternative, RepoFlow alternative, npm registry, Docker registry, Maven repository, PyPI repository",
+    url: "https://pkgly.dev/",
+    image: "https://pkgly.dev/images/og-card.png",
+  },
   hero: {
     wordmark: "pkgly",
-    title: "Pkgly: The Open-Source Artifact Manager",
+    title: "Self-hosted package registry",
     subtitle:
-      "The self-hosted package registry for public and private packages. Manage all your artifacts with an open-source artifact management solution.",
+      "Manage public and private packages across npm, Docker / OCI, Maven, Python, and more with hosted, proxy, and virtual repositories, S3 storage, ACLs, and SSO.",
     screenshot: {
       image: "/images/overview.png",
       previewImage: "/images/previews/overview.webp",
@@ -63,10 +74,13 @@ export const siteContent = {
   statChips: [
     "Free and open source",
     "10+ package ecosystems",
-    "Hosted + proxy + virtual repositories",
-    "S3 storage with local disk caching",
-    "Users, ACLs, and repository permissions",
     "SSO support",
+    "Hosted, proxy and virtual repositories",
+    "S3 storage with local disk caching",
+    "Users, ACLs",
+    "Repository cleanup policies",
+    "Webhooks for packages",
+    "Pkgly CLI",
   ],
   spotlight: {
     label: "Core features",
@@ -76,6 +90,9 @@ export const siteContent = {
       "S3 storage with local disk caching",
       "Users, ACLs, and repository permissions",
       "SSO support, tokens, and audit logs",
+      "Repository cleanup policies",
+      "Webhooks for package events",
+      "Pkgly CLI for automation",
     ],
     benchmarkLabel: "Verified mixed-package workload",
     benchmarkValue: "200 RPS",
@@ -177,50 +194,106 @@ export const siteContent = {
     {
       name: "Artifactory",
       priceLabel: "Starts at $27,000/year",
-      detail: "JFrog lists Artifactory Pro X self-managed pricing starting at $27,000 per year.",
+      detail: "JFrog lists Artifactory Pro X self-managed pricing from $27,000/year for one server.",
       sourceHref: "https://jfrog.com/artifactory/buy-now/",
     },
     {
       name: "Nexus",
-      priceLabel: "Quote required for self-hosted",
-      detail: "Sonatype publishes cloud pricing starting at $135 + consumption per month and routes self-hosted buyers to sales.",
-      sourceHref: "https://www.sonatype.com/products/sonatype-nexus-repository/cloud/offer",
+      priceLabel: "Free CE, quote for self-hosted Pro",
+      detail: "Sonatype lists a free Community Edition and routes air-gapped or self-hosted Pro deployments to quote.",
+      sourceHref: "https://www.sonatype.com/products/pricing",
     },
     {
       name: "RepoFlow",
       priceLabel: "Starts at $1,999/year self-hosted",
-      detail: "RepoFlow advertises self-hosted pricing starting at $1,999 per year with unlimited users and requests.",
-      sourceHref: "https://www.repoflow.io/",
+      detail: "RepoFlow lists a non-commercial Personal plan and commercial self-hosted Standard from $1,999/year.",
+      sourceHref: "https://www.repoflow.io/pricing",
     },
   ] satisfies CompetitorCallout[],
   comparisonRows: [
     {
-      label: "License cost to self-host",
+      label: "Self-hosted commercial cost",
       pkgly: "$0",
-      artifactory: "$27,000/year+",
-      nexus: "Quote required",
-      repoflow: "$1,999/year+",
+      artifactory: "From $27,000/year",
+      nexus: "Free CE; Pro quote required",
+      repoflow: "From $1,999/year",
     },
     {
-      label: "Open-source codebase",
-      pkgly: "Yes",
-      artifactory: "No",
-      nexus: "No",
+      label: "Source availability",
+      pkgly: "Open source",
+      artifactory: "Commercial source closed",
+      nexus: "Community source available; Pro commercial",
+      repoflow: "Commercial source closed",
+    },
+    {
+      label: "Repository modes",
+      pkgly: "Hosted, proxy, virtual",
+      artifactory: "Local, remote, virtual",
+      nexus: "Hosted, proxy, group",
+      repoflow: "Local, remote, virtual",
+    },
+    {
+      label: "Hosted format coverage",
+      pkgly: "npm, Docker / OCI, Helm, Maven, Python, Cargo, RubyGems, Go, Debian, Composer, NuGet",
+      artifactory: "50+ technologies",
+      nexus: "20+ formats",
+      repoflow: "Major package types",
+    },
+    {
+      label: "Proxy cache coverage",
+      pkgly: "Most formats; Cargo and Helm are hosted-only today",
+      artifactory: "Broad public registry proxying",
+      nexus: "Proxy repositories across supported formats",
+      repoflow: "Store and proxy across major package types",
+    },
+    {
+      label: "Virtual / group repositories",
+      pkgly: "Virtual repositories",
+      artifactory: "Virtual repositories",
+      nexus: "Group repositories",
+      repoflow: "Virtual repositories",
+    },
+    {
+      label: "S3 artifact storage",
+      pkgly: "Yes, with local disk cache",
+      artifactory: "Yes",
+      nexus: "Blob storage options",
       repoflow: "No",
     },
     {
-      label: "Public + private packages",
+      label: "SSO",
       pkgly: "Yes",
-      artifactory: "Yes",
-      nexus: "Yes",
-      repoflow: "Yes",
+      artifactory: "Enterprise access control",
+      nexus: "Pro includes SSO",
+      repoflow: "Yes, SSO + LDAP",
     },
     {
-      label: "Mixed ecosystem support",
-      pkgly: "Major package types",
-      artifactory: "40+ technologies",
-      nexus: "20+ formats",
-      repoflow: "Major package types",
+      label: "Audit trail",
+      pkgly: "Yes",
+      artifactory: "Yes on paid tiers",
+      nexus: "Pro audit APIs",
+      repoflow: "No",
+    },
+    {
+      label: "Package cleanup / retention",
+      pkgly: "Per-repository cleanup policies",
+      artifactory: "Automated cleanup on higher tiers",
+      nexus: "Repository cleanup policies",
+      repoflow: "Retention rules advertised",
+    },
+    {
+      label: "Webhooks",
+      pkgly: "Package publish/delete webhooks",
+      artifactory: "Platform integrations and alerts",
+      nexus: "Customized workflow automation",
+      repoflow: "No",
+    },
+    {
+      label: "Migration help",
+      pkgly: "Artifactory-to-pkgly migration script",
+      artifactory: "Vendor migration services",
+      nexus: "Artifactory migration services advertised",
+      repoflow: "Migration guides for Artifactory and Nexus",
     },
   ],
   quickstart: {
@@ -247,5 +320,6 @@ export const siteContent = {
       href: "https://docs.pkgly.dev/quickstart.html",
     },
   ] satisfies Cta[],
-  sourceNote: "Comparison references checked against official vendor pages on April 4, 2026.",
+  // sourceNote:
+    // "Checked against official vendor pages on April 30, 2026. Vendor packaging changes; verify pricing before purchase.",
 };

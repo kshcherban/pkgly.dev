@@ -1,3 +1,5 @@
+// ABOUTME: Renders the pkgly landing page and wires lightweight browser behavior.
+// ABOUTME: Applies SEO metadata, theme state, screenshot lightbox, and copy actions.
 import { siteContent } from "./content";
 
 function githubMarkSvg() {
@@ -182,9 +184,107 @@ function applyTheme(theme: "light" | "dark", toggleLabel: HTMLElement | null, to
   }
 }
 
+function applySeoMetadata() {
+  document.title = siteContent.seo.title;
+
+  const metaPairs: [string, string][] = [
+    ["description", siteContent.seo.description],
+    ["keywords", siteContent.seo.keywords],
+    ["robots", "index, follow"],
+  ];
+
+  for (const [name, content] of metaPairs) {
+    let meta = document.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", name);
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", content);
+  }
+
+  const ogPairs: [string, string][] = [
+    ["og:title", siteContent.seo.title],
+    ["og:description", siteContent.seo.description],
+    ["og:url", siteContent.seo.url],
+    ["og:type", "website"],
+    ["og:site_name", siteContent.hero.wordmark],
+    ["og:image", siteContent.seo.image],
+  ];
+
+  for (const [property, content] of ogPairs) {
+    let meta = document.querySelector<HTMLMetaElement>(`meta[property="${property}"]`);
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("property", property);
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", content);
+  }
+
+  const twitterPairs: [string, string][] = [
+    ["twitter:card", "summary_large_image"],
+    ["twitter:title", siteContent.seo.title],
+    ["twitter:description", siteContent.seo.description],
+    ["twitter:image", siteContent.seo.image],
+  ];
+
+  for (const [name, content] of twitterPairs) {
+    let meta = document.querySelector<HTMLMetaElement>(`meta[name="${name}"]`);
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.setAttribute("name", name);
+      document.head.appendChild(meta);
+    }
+    meta.setAttribute("content", content);
+  }
+
+  let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  if (!canonical) {
+    canonical = document.createElement("link");
+    canonical.setAttribute("rel", "canonical");
+    document.head.appendChild(canonical);
+  }
+  canonical.setAttribute("href", siteContent.seo.url);
+
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: siteContent.hero.wordmark,
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Web",
+    url: siteContent.seo.url,
+    description: siteContent.seo.description,
+    keywords: siteContent.seo.keywords,
+    license: "https://github.com/kshcherban/pkgly/blob/main/LICENSE",
+    featureList: siteContent.spotlight.features,
+    sameAs: [siteContent.hero.primaryCta.href],
+    softwareHelp: {
+      "@type": "CreativeWork",
+      url: siteContent.hero.docsCta.href,
+    },
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+      url: siteContent.hero.primaryCta.href,
+    },
+  };
+
+  let script = document.getElementById("pkgly-structured-data") as HTMLScriptElement | null;
+  if (!script) {
+    script = document.createElement("script");
+    script.id = "pkgly-structured-data";
+    script.type = "application/ld+json";
+    document.head.appendChild(script);
+  }
+  script.textContent = JSON.stringify(structuredData);
+}
+
 export function renderLandingPage(root: HTMLElement) {
+  applySeoMetadata();
+
   const heroCtas = [
-    renderGithubCta(),
     renderCta(
       {
         ...siteContent.hero.docsCta,
@@ -193,14 +293,14 @@ export function renderLandingPage(root: HTMLElement) {
       },
       "button button--card button--secondary",
     ),
-    renderCta(
-      {
-        ...siteContent.hero.quickstartCta,
-        iconSvg: quickstartIconSvg(),
-        subtitle: "Start in minutes",
-      },
-      "button button--card button--ghost",
-    ),
+    `<a class="button button--card button--ghost" href="#quickstart">
+      <span class="button__icon">${quickstartIconSvg()}</span>
+      <span class="button__copy">
+        <strong>Quickstart</strong>
+        <span>Start in minutes</span>
+      </span>
+    </a>`,
+    renderGithubCta(),
   ].join("");
 
   const packageTypes = siteContent.packageTypes
@@ -322,7 +422,6 @@ export function renderLandingPage(root: HTMLElement) {
             <h1>${siteContent.hero.title}</h1>
             <p class="hero__subtitle">${siteContent.hero.subtitle}</p>
             <div class="hero__actions hero__actions--hero">${heroCtas}</div>
-            <ul class="chip-list" aria-label="Highlights">${statChips}</ul>
           </div>
           <div class="hero__visual">
             <div class="hero__frame">
@@ -342,13 +441,14 @@ export function renderLandingPage(root: HTMLElement) {
                 <span class="hero__zoom-label">Zoom screenshot</span>
               </button>
             </div>
+            <ul class="chip-list chip-list--hero" aria-label="Highlights">${statChips}</ul>
           </div>
         </section>
 
         <section class="section">
           <div class="section-heading">
             <p class="eyebrow">Works where your team already ships</p>
-            <h2>One repository manager for the package types people actually use</h2>
+            <h2>One repository manager for the most popular package types</h2>
           </div>
           <ul class="package-strip" aria-label="Supported package ecosystems">${packageTypes}</ul>
         </section>
@@ -405,7 +505,6 @@ export function renderLandingPage(root: HTMLElement) {
               this is the alternative.
             </p>
           </div>
-          <div class="competitor-grid">${competitorCallouts}</div>
           <div class="comparison-table-wrap">
             <table class="comparison-table">
               <caption>Practical comparison for self-hosted teams</caption>
@@ -421,7 +520,6 @@ export function renderLandingPage(root: HTMLElement) {
               <tbody>${comparisonRows}</tbody>
             </table>
           </div>
-          <p class="source-note">${siteContent.sourceNote}</p>
         </section>
 
         <section class="section" id="quickstart">
@@ -433,9 +531,9 @@ export function renderLandingPage(root: HTMLElement) {
               <div class="hero__actions">
                 ${renderCta(
                   {
-                    label: siteContent.hero.docsCta.label,
+                    label: siteContent.hero.quickstartCta.label,
                     href: siteContent.hero.quickstartCta.href,
-                    iconSvg: docsIconSvg(),
+                    iconSvg: quickstartIconSvg(),
                     subtitle: "Open the install guide",
                   },
                   "button button--card button--secondary",

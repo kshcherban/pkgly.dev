@@ -1,3 +1,5 @@
+// ABOUTME: Tests landing page rendering, SEO metadata, and interactive UI behavior.
+// ABOUTME: Verifies content stays aligned with pkgly positioning and static metadata.
 import { describe, expect, it } from "vitest";
 import { renderLandingPage } from "./app";
 import { siteContent } from "./content";
@@ -15,13 +17,20 @@ function setupPage() {
 }
 
 describe("renderLandingPage", () => {
-  it("renders the hero headline and all primary CTAs", () => {
+  it("renders the hero headline and prioritized CTAs", () => {
     setupPage();
 
-    expect(document.querySelector("h1")?.textContent).toBe("Own your packages");
-    expect(document.querySelector(`a[href="${siteContent.hero.primaryCta.href}"]`)).not.toBeNull();
-    expect(document.querySelector(`a[href="${siteContent.hero.docsCta.href}"]`)).not.toBeNull();
-    expect(document.querySelector(`a[href="${siteContent.hero.quickstartCta.href}"]`)).not.toBeNull();
+    expect(document.querySelector("h1")?.textContent).toBe("Self-hosted package registry");
+
+    const heroButtons = Array.from(document.querySelectorAll(".hero__actions--hero a"));
+    expect(heroButtons.map((button) => button.getAttribute("href"))).toEqual([
+      siteContent.hero.docsCta.href,
+      "#quickstart",
+      siteContent.hero.primaryCta.href,
+    ]);
+    expect(heroButtons[0]?.className).toContain("button--secondary");
+    expect(heroButtons[1]?.className).toContain("button--ghost");
+    expect(heroButtons[2]?.className).toContain("button--github");
   });
 
   it("renders all supported package families in the compatibility strip", () => {
@@ -53,6 +62,33 @@ describe("renderLandingPage", () => {
     expect(document.body.textContent).toContain("4 vCPU / 8 GB RAM");
   });
 
+  it("renders a detailed self-hosted comparison against current competitors", () => {
+    setupPage();
+
+    const comparison = document.querySelector("#comparison");
+    expect(comparison).not.toBeNull();
+
+    for (const label of [
+      "Self-hosted commercial cost",
+      "Source availability",
+      "Repository modes",
+      "Hosted format coverage",
+      "Proxy cache coverage",
+      "Virtual / group repositories",
+      "S3 artifact storage",
+      "SSO",
+      "Audit trail",
+      "Package cleanup / retention",
+      "Webhooks",
+      "Migration help",
+    ]) {
+      expect(comparison?.textContent).toContain(label);
+    }
+
+    expect(comparison?.textContent).toContain("RepoFlow audit logs are marked soon");
+    expect(comparison?.textContent).toContain("Checked against official vendor pages on April 30, 2026");
+  });
+
   it("renders the updated key capabilities in the overview content", () => {
     setupPage();
 
@@ -60,7 +96,9 @@ describe("renderLandingPage", () => {
     expect(document.body.textContent).toContain("S3 storage with local disk caching");
     expect(document.body.textContent).toContain("Users, ACLs, and repository permissions");
     expect(document.body.textContent).toContain("SSO support");
-    expect(document.body.textContent).toContain("Run npm, Docker, Helm, Maven, Python, Cargo, and more");
+    expect(document.body.textContent).toContain("Repository cleanup policies");
+    expect(document.body.textContent).toContain("Webhooks for packages");
+    expect(document.body.textContent).toContain("Pkgly CLI");
   });
 
   it("renders the architecture overview with runtime and storage components", () => {
@@ -214,5 +252,84 @@ describe("renderLandingPage", () => {
     expect(document.querySelector(`a[href="#oss"]`)).toBeNull();
     expect(document.querySelector("#oss")).toBeNull();
     expect(document.body.textContent).not.toContain("Star the repo. Read the docs. Ship your own stack");
+  });
+
+  it("sets SEO metadata and structured data", () => {
+    setupPage();
+
+    expect(document.title).toBe(siteContent.seo.title);
+    expect(document.querySelector('meta[name="description"]')?.getAttribute("content")).toBe(
+      siteContent.seo.description,
+    );
+
+    const structuredData = document.getElementById("pkgly-structured-data");
+    expect(structuredData).not.toBeNull();
+
+    const parsed = JSON.parse(structuredData?.textContent ?? "{}");
+    expect(parsed["@type"]).toBe("SoftwareApplication");
+    expect(parsed.name).toBe("pkgly");
+    expect(parsed.featureList).toContain("Hosted, proxy, and virtual repositories");
+    expect(parsed.keywords).toContain("self-hosted package registry");
+    expect(parsed.offers.price).toBe("0");
+    expect(parsed.softwareHelp.url).toBe(siteContent.hero.docsCta.href);
+  });
+
+  it("sets keyword and robots SEO metadata", () => {
+    setupPage();
+
+    expect(document.querySelector('meta[name="keywords"]')?.getAttribute("content")).toContain(
+      "Artifactory alternative",
+    );
+    expect(document.querySelector('meta[name="robots"]')?.getAttribute("content")).toBe(
+      "index, follow",
+    );
+  });
+
+  it("sets Open Graph meta tags", () => {
+    setupPage();
+
+    expect(document.querySelector('meta[property="og:title"]')?.getAttribute("content")).toBe(
+      siteContent.seo.title,
+    );
+    expect(document.querySelector('meta[property="og:description"]')?.getAttribute("content")).toBe(
+      siteContent.seo.description,
+    );
+    expect(document.querySelector('meta[property="og:url"]')?.getAttribute("content")).toBe(
+      siteContent.seo.url,
+    );
+    expect(document.querySelector('meta[property="og:type"]')?.getAttribute("content")).toBe(
+      "website",
+    );
+    expect(document.querySelector('meta[property="og:site_name"]')?.getAttribute("content")).toBe(
+      siteContent.hero.wordmark,
+    );
+    expect(document.querySelector('meta[property="og:image"]')?.getAttribute("content")).toBe(
+      siteContent.seo.image,
+    );
+  });
+
+  it("sets Twitter Card meta tags", () => {
+    setupPage();
+
+    expect(document.querySelector('meta[name="twitter:card"]')?.getAttribute("content")).toBe(
+      "summary_large_image",
+    );
+    expect(document.querySelector('meta[name="twitter:title"]')?.getAttribute("content")).toBe(
+      siteContent.seo.title,
+    );
+    expect(document.querySelector('meta[name="twitter:description"]')?.getAttribute("content")).toBe(
+      siteContent.seo.description,
+    );
+    expect(document.querySelector('meta[name="twitter:image"]')?.getAttribute("content")).toBe(
+      siteContent.seo.image,
+    );
+  });
+
+  it("sets the canonical URL", () => {
+    setupPage();
+
+    const canonical = document.querySelector('link[rel="canonical"]');
+    expect(canonical).not.toBeNull();
+    expect(canonical?.getAttribute("href")).toBe(siteContent.seo.url);
   });
 });

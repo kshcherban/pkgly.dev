@@ -1,0 +1,120 @@
+<!-- ABOUTME: Animated SVG wordmark asset for pkgly header and footer branding. -->
+<!-- ABOUTME: Preserves the original pkgly box style while opening top flaps. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150">
+<!-- SVG created with Arrow, by QuiverAI (https://quiver.ai) -->
+  <style type="text/css"><![CDATA[
+.cls-0 {fill:url(#SVGID_1_);}
+.cls-1 {fill:url(#SVGID_2_);}
+.cls-2 {fill:url(#SVGID_3_);}
+.cls-3 {fill:url(#SVGID_4_);}
+.cls-4 {fill:url(#SVGID_5_);}
+.cls-5 {fill:url(#SVGID_6_);}
+.wordmark-flap {
+  shape-rendering: geometricPrecision;
+}
+]]></style>
+  <linearGradient id="SVGID_1_" x1="3.842" x2="75.06" y1="56.17" y2="56.17" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#FAB516" offset="0"/>
+    <stop stop-color="#F58B1F" offset="1"/>
+  </linearGradient>
+  <linearGradient id="SVGID_2_" x1="75.11" x2="146.8" y1="28.36" y2="28.36" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#FACB1B" offset="0"/>
+    <stop stop-color="#FBD51C" offset="1"/>
+  </linearGradient>
+  <linearGradient id="SVGID_3_" x1="19.57" x2="75.06" y1="40.65" y2="40.65" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#F49222" offset="0"/>
+    <stop stop-color="#EE6C22" offset="1"/>
+  </linearGradient>
+  <linearGradient id="SVGID_4_" x1="75.06" x2="131.6" y1="43.53" y2="43.53" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#C88313" offset="0"/>
+    <stop stop-color="#E0A31E" offset="1"/>
+  </linearGradient>
+  <linearGradient id="SVGID_5_" x1="32.79" x2="117.1" y1="81.83" y2="81.83" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#2D7782" offset="0"/>
+    <stop stop-color="#135E6B" offset="1"/>
+  </linearGradient>
+  <linearGradient id="SVGID_6_" x1="3.842" x2="146.8" y1="95.62" y2="95.62" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#0D6978" offset="0"/>
+    <stop stop-color="#106B7A" offset=".5068"/>
+    <stop stop-color="#16747F" offset=".7683"/>
+    <stop stop-color="#0F6777" offset=".9736"/>
+    <stop stop-color="#0E6576" offset="1"/>
+  </linearGradient>
+  <linearGradient id="SVGID_7_" x1="75.02" x2="117.1" y1="121.6" y2="121.6" gradientUnits="userSpaceOnUse">
+    <stop stop-color="#248695" offset="0"/>
+    <stop stop-color="#187280" offset="1"/>
+  </linearGradient>
+
+  <path class="cls-4" d="m32.8 80.4 42.4-19.1 41.9 18.8-42.1 19.4z"/>
+
+  <path class="cls-2 wordmark-flap" d="M32.8 80.4 L75.1 61.3 L75.1 16.1 L19.6 42.6 Z">
+    <animate
+      attributeName="d"
+      dur="4.2s"
+      repeatCount="indefinite"
+      calcMode="spline"
+      keyTimes="0;0.12;0.26;0.42;0.86;1"
+      keySplines=".33 0 .2 1;.33 0 .2 1;.2 0 .1 1;.4 0 .2 1;.45 0 .2 1"
+      values="
+        M32.8 80.4 L75.1 61.3 L75.0 80.2 L53.8 89.9 Z;
+        M32.8 80.4 L75.1 61.3 L75.0 80.2 L53.8 89.9 Z;
+        M32.8 80.4 L75.1 61.3 L83.5 38.8 L36.6 60.1 Z;
+        M32.8 80.4 L75.1 61.3 L75.1 16.1 L19.6 42.6 Z;
+        M32.8 80.4 L75.1 61.3 L75.1 16.1 L19.6 42.6 Z;
+        M32.8 80.4 L75.1 61.3 L75.0 80.2 L53.8 89.9 Z"/>
+  </path>
+
+  <path class="cls-3 wordmark-flap" d="M75.1 61.3 L117.1 80.1 L131.6 42.6 L75.1 16.1 Z">
+    <animate
+      attributeName="d"
+      dur="4.2s"
+      repeatCount="indefinite"
+      calcMode="spline"
+      keyTimes="0;0.12;0.26;0.42;0.86;1"
+      keySplines=".33 0 .2 1;.33 0 .2 1;.2 0 .1 1;.4 0 .2 1;.45 0 .2 1"
+      values="
+        M75.1 61.3 L117.1 80.1 L96.0 89.8 L75.0 80.2 Z;
+        M75.1 61.3 L117.1 80.1 L96.0 89.8 L75.0 80.2 Z;
+        M75.1 61.3 L117.1 80.1 L113.4 60.0 L66.5 38.8 Z;
+        M75.1 61.3 L117.1 80.1 L131.6 42.6 L75.1 16.1 Z;
+        M75.1 61.3 L117.1 80.1 L131.6 42.6 L75.1 16.1 Z;
+        M75.1 61.3 L117.1 80.1 L96.0 89.8 L75.0 80.2 Z"/>
+  </path>
+
+  <path class="cls-0 wordmark-flap" d="M32.8 80.4 L75.0 99.4 L96.0 80.4 L53.8 61.4 Z">
+    <animate
+      attributeName="d"
+      dur="4.2s"
+      repeatCount="indefinite"
+      calcMode="spline"
+      keyTimes="0;0.36;0.50;0.66;0.86;1"
+      keySplines=".33 0 .2 1;.33 0 .2 1;.2 0 .1 1;.4 0 .2 1;.45 0 .2 1"
+      values="
+        M32.8 80.4 L75.0 99.4 L96.0 80.4 L53.8 61.4 Z;
+        M32.8 80.4 L75.0 99.4 L96.0 80.4 L53.8 61.4 Z;
+        M32.8 80.4 L75.0 99.4 L64.0 114.0 L21.8 95.0 Z;
+        M32.8 80.4 L75.0 99.4 L45.5 125.9 L3.3 106.9 Z;
+        M32.8 80.4 L75.0 99.4 L45.5 125.9 L3.3 106.9 Z;
+        M32.8 80.4 L75.0 99.4 L96.0 80.4 L53.8 61.4 Z"/>
+  </path>
+
+  <path class="cls-1 wordmark-flap" d="M75.0 99.4 L117.1 80.1 L96.1 61.1 L54.0 80.4 Z">
+    <animate
+      attributeName="d"
+      dur="4.2s"
+      repeatCount="indefinite"
+      calcMode="spline"
+      keyTimes="0;0.36;0.50;0.66;0.86;1"
+      keySplines=".33 0 .2 1;.33 0 .2 1;.2 0 .1 1;.4 0 .2 1;.45 0 .2 1"
+      values="
+        M75.0 99.4 L117.1 80.1 L96.1 61.1 L54.0 80.4 Z;
+        M75.0 99.4 L117.1 80.1 L96.1 61.1 L54.0 80.4 Z;
+        M75.0 99.4 L117.1 80.1 L130.7 95.0 L88.6 114.3 Z;
+        M75.0 99.4 L117.1 80.1 L146.8 106.8 L104.7 126.1 Z;
+        M75.0 99.4 L117.1 80.1 L146.8 106.8 L104.7 126.1 Z;
+        M75.0 99.4 L117.1 80.1 L96.1 61.1 L54.0 80.4 Z"/>
+  </path>
+
+  <path class="cls-5" d="m3.8 35 27.2 12.7c1.3 0.6 2 2 2 3.8l-0.1 28.9 42.1 19v49.4l-71.2-34.8v-79zm115.8 13.3c-1.3 0.7-2.7 2.3-2.7 4.3l0.2 27.5-42.1 19.3v49.4l71.8-34.7v-79.2l-27.2 13.4z"/>
+  <path d="m75 99.4 42.1-19.3v48.35l-42.1 20.35z" fill="url(#SVGID_7_)"/>
+</svg>

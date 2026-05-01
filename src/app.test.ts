@@ -1,5 +1,6 @@
 // ABOUTME: Tests landing page rendering, SEO metadata, and interactive UI behavior.
 // ABOUTME: Verifies content stays aligned with pkgly positioning and static metadata.
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { renderLandingPage } from "./app";
 import { siteContent } from "./content";
@@ -235,15 +236,25 @@ describe("renderLandingPage", () => {
     expect(heroButtons.length).toBeGreaterThanOrEqual(2);
   });
 
-  it("renders the optimized logo asset in the header and footer", () => {
+  it("renders the animated wordmark asset in the header and footer", () => {
     setupPage();
 
     const logos = Array.from(document.querySelectorAll<HTMLImageElement>(".wordmark__image"));
     expect(logos.length).toBe(2);
 
     for (const logo of logos) {
-      expect(logo.getAttribute("src")).toBe("/logo.webp");
+      expect(logo.getAttribute("src")).toBe("/wordmark__image.svg");
     }
+  });
+
+  it("keeps the wordmark animation in the SVG asset", () => {
+    const wordmarkSvg = readFileSync("public/wordmark__image.svg", "utf8");
+
+    expect(wordmarkSvg).toContain("wordmark-cardboard-flap");
+    expect(wordmarkSvg).toContain("@keyframes wordmark-open-left-flap");
+    expect(wordmarkSvg).toContain("@keyframes wordmark-open-right-flap");
+    expect(wordmarkSvg).not.toContain("wordmark-being");
+    expect(wordmarkSvg).not.toContain("@keyframes wordmark-rise");
   });
 
   it("removes the open source header link and bottom section", () => {

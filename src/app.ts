@@ -400,7 +400,7 @@ export function renderLandingPage(root: HTMLElement) {
     <div class="page-shell">
       <header class="site-header">
         <a class="wordmark" href="#top" aria-label="${siteContent.hero.wordmark}">
-          <img src="/logo.webp" alt="pkgly logo" class="wordmark__image" width="256" height="256" />
+          <img src="/wordmark__image.svg" alt="pkgly logo" class="wordmark__image" width="256" height="256" />
         </a>
         <div class="site-header__actions">
           <nav class="header-nav" aria-label="Primary">
@@ -570,7 +570,7 @@ export function renderLandingPage(root: HTMLElement) {
       <footer class="site-footer">
         <span class="site-footer__brand">
           <img
-            src="/logo.webp"
+            src="/wordmark__image.svg"
             alt="pkgly logo"
             class="wordmark__image wordmark__image--footer"
             width="256"

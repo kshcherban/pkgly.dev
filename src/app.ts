@@ -1,6 +1,6 @@
 // ABOUTME: Renders the pkgly landing page and wires lightweight browser behavior.
 // ABOUTME: Applies SEO metadata, theme state, screenshot lightbox, and copy actions.
-import { siteContent } from "./content";
+import { type ComparisonValue, siteContent } from "./content";
 
 function githubMarkSvg() {
   return `
@@ -73,46 +73,16 @@ function moonIconSvg() {
   `;
 }
 
-function renderGithubCta() {
-  return `
-    <a
-      class="button button--card button--secondary button--github"
-      href="${siteContent.hero.primaryCta.href}"
-      target="_blank"
-      rel="noreferrer"
-      aria-label="${siteContent.hero.primaryCta.label}">
-      <span class="button__icon">${githubMarkSvg()}</span>
-      <span class="button__copy">
-        <strong>GitHub</strong>
-        <span>View the source</span>
-      </span>
-    </a>
-  `;
-}
+function renderComparisonValue(value: ComparisonValue) {
+  if (typeof value === "string") {
+    return value;
+  }
 
-function renderCta(
-  cta: {
-    label: string;
-    href: string;
-    iconSvg?: string;
-    subtitle?: string;
-  },
-  className: string,
-) {
-  const icon = cta.iconSvg
-    ? `<span class="button__icon">${cta.iconSvg}</span>`
-    : "";
-  const subtitle = cta.subtitle ? `<span>${cta.subtitle}</span>` : "";
+  const label = value ? "Available" : "Not available";
+  const mark = value ? "✓" : "×";
+  const state = value ? "yes" : "no";
 
-  return `
-    <a class="${className}" href="${cta.href}" target="_blank" rel="noreferrer">
-      ${icon}
-      <span class="button__copy ${cta.subtitle ? "" : "button__copy--single"}">
-        <strong>${cta.label}</strong>
-        ${subtitle}
-      </span>
-    </a>
-  `;
+  return `<span class="comparison-mark comparison-mark--${state}" aria-label="${label}" title="${label}">${mark}</span>`;
 }
 
 function renderArchitectureNode(
@@ -284,24 +254,20 @@ function applySeoMetadata() {
 export function renderLandingPage(root: HTMLElement) {
   applySeoMetadata();
 
-  const heroCtas = [
-    renderCta(
-      {
-        ...siteContent.hero.docsCta,
-        iconSvg: docsIconSvg(),
-        subtitle: "Setup and reference",
-      },
-      "button button--card button--secondary",
-    ),
-    `<a class="button button--card button--ghost" href="#quickstart">
-      <span class="button__icon">${quickstartIconSvg()}</span>
-      <span class="button__copy">
-        <strong>Quickstart</strong>
-        <span>Start in minutes</span>
-      </span>
-    </a>`,
-    renderGithubCta(),
-  ].join("");
+  const heroCtas = `
+    <a class="button button--primary hero__quickstart" href="#quickstart">
+      <span class="button__inline-icon">${quickstartIconSvg()}</span>
+      Run quickstart
+    </a>
+    <a class="button button--secondary hero__secondary" href="${siteContent.hero.docsCta.href}" target="_blank" rel="noreferrer">
+      <span class="button__inline-icon">${docsIconSvg()}</span>
+      ${siteContent.hero.docsCta.label}
+    </a>
+    <a class="button button--secondary hero__secondary" href="${siteContent.hero.primaryCta.href}" target="_blank" rel="noreferrer">
+      <span class="button__inline-icon">${githubMarkSvg()}</span>
+      GitHub
+    </a>
+  `;
 
   const packageTypes = siteContent.packageTypes
     .map((packageType) => `<li class="package-strip__item">${packageType}</li>`)
@@ -328,7 +294,7 @@ export function renderLandingPage(root: HTMLElement) {
 
   const demoCards = siteContent.demoCards
     .map(
-      (demo, index) => `
+      (demo) => `
         <article class="demo-card">
           <div class="demo-card__copy">
             <p class="eyebrow">${demo.eyebrow}</p>
@@ -342,7 +308,13 @@ export function renderLandingPage(root: HTMLElement) {
             data-zoom-alt="${demo.alt}"
             data-zoom-title="${demo.title}"
             aria-label="Open screenshot for ${demo.title}">
-            <img src="${demo.previewImage}" alt="${demo.alt}" loading="lazy" decoding="async" />
+            <img
+              src="${demo.previewImage}"
+              alt="${demo.alt}"
+              width="${demo.width}"
+              height="${demo.height}"
+              loading="lazy"
+              decoding="async" />
             <span class="demo-card__zoom-label">Zoom screenshot</span>
           </button>
         </article>
@@ -368,10 +340,10 @@ export function renderLandingPage(root: HTMLElement) {
       (row) => `
         <tr>
           <th scope="row">${row.label}</th>
-          <td>${row.pkgly}</td>
-          <td>${row.artifactory}</td>
-          <td>${row.nexus}</td>
-          <td>${row.repoflow}</td>
+          <td>${renderComparisonValue(row.pkgly)}</td>
+          <td>${renderComparisonValue(row.artifactory)}</td>
+          <td>${renderComparisonValue(row.nexus)}</td>
+          <td>${renderComparisonValue(row.repoflow)}</td>
         </tr>
       `,
     )
@@ -408,7 +380,7 @@ export function renderLandingPage(root: HTMLElement) {
             <a class="header-link" href="#comparison">Compare</a>
             <a class="header-link" href="#quickstart">Quickstart</a>
           </nav>
-          <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false">
+          <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Toggle theme">
             <span class="theme-toggle__icon" data-theme-icon="sun">${sunIconSvg()}</span>
             <span data-theme-toggle-label></span>
           </button>
@@ -435,6 +407,8 @@ export function renderLandingPage(root: HTMLElement) {
                 <img
                   src="${siteContent.hero.screenshot.previewImage}"
                   alt="${siteContent.hero.screenshot.alt}"
+                  width="${siteContent.hero.screenshot.width}"
+                  height="${siteContent.hero.screenshot.height}"
                   fetchpriority="high"
                   decoding="async"
                   class="hero__image" />
@@ -445,12 +419,38 @@ export function renderLandingPage(root: HTMLElement) {
           </div>
         </section>
 
-        <section class="section">
+        <section class="section section--compact">
           <div class="section-heading">
             <p class="eyebrow">Works where your team already ships</p>
             <h2>One repository manager for the most popular package types</h2>
           </div>
           <ul class="package-strip" aria-label="Supported package ecosystems">${packageTypes}</ul>
+        </section>
+
+        <section class="section" id="quickstart">
+          <div class="quickstart">
+            <div class="quickstart__copy">
+              <p class="eyebrow">Quickstart</p>
+              <h2>${siteContent.quickstart.title}</h2>
+              <p>${siteContent.quickstart.body}</p>
+              <a class="button button--primary" href="${siteContent.hero.quickstartCta.href}" target="_blank" rel="noreferrer">
+                Open the install guide
+              </a>
+            </div>
+            <div class="terminal">
+              <div class="terminal__bar">
+                <span class="terminal__dot terminal__dot--close"></span>
+                <span class="terminal__dot terminal__dot--minimize"></span>
+                <span class="terminal__dot terminal__dot--maximize"></span>
+                <span class="terminal__title">Terminal</span>
+                <button class="terminal__copy" data-copy-terminal aria-label="Copy commands">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </button>
+              </div>
+              <pre class="terminal__body"><code>${quickstartLines}</code></pre>
+              <p class="sr-only" data-copy-status aria-live="polite"></p>
+            </div>
+          </div>
         </section>
 
         <section class="section section--alt" id="architecture">
@@ -468,7 +468,7 @@ export function renderLandingPage(root: HTMLElement) {
           </div>
         </section>
 
-        <section class="section section--alt">
+        <section class="section section--alt" id="product-demo">
           <div class="section-heading">
             <p class="eyebrow">Product demo</p>
             <h2>A cleaner path from search to install to administration</h2>
@@ -476,10 +476,41 @@ export function renderLandingPage(root: HTMLElement) {
           <div class="demo-grid">${demoCards}</div>
         </section>
 
-        <section class="section">
+        <section class="section section--alt" id="comparison">
+          <div class="section-heading">
+            <p class="eyebrow">Direct callout</p>
+            <h2>Pkgly exists because Artifactory, Nexus, and RepoFlow leave obvious gaps</h2>
+            <p>
+              If you want modern package management without a self-hosted license bill or a bloated operator experience,
+              this is the alternative.
+            </p>
+          </div>
+          <div class="competitor-grid">${competitorCallouts}</div>
+          <details class="comparison-details">
+            <summary>View the detailed comparison</summary>
+            <div class="comparison-table-wrap">
+              <table class="comparison-table">
+                <caption>Practical comparison for self-hosted teams</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Capability</th>
+                    <th scope="col">pkgly</th>
+                    <th scope="col">Artifactory</th>
+                    <th scope="col">Nexus</th>
+                    <th scope="col">RepoFlow</th>
+                  </tr>
+                </thead>
+                <tbody>${comparisonRows}</tbody>
+              </table>
+            </div>
+            <p class="source-note">${siteContent.sourceNote}</p>
+          </details>
+        </section>
+
+        <section class="section" aria-labelledby="capabilities-title">
           <div class="section-heading">
             <p class="eyebrow">Why pkgly</p>
-            <h2>Built for developers, OSS maintainers, and platform teams who want control</h2>
+            <h2 id="capabilities-title">Built for developers, OSS maintainers, and platform teams who want control</h2>
           </div>
           <div class="why-grid">
             <aside class="spotlight-card">
@@ -495,77 +526,13 @@ export function renderLandingPage(root: HTMLElement) {
             <div class="pillar-grid">${pillars}</div>
           </div>
         </section>
-
-        <section class="section section--alt" id="comparison">
-          <div class="section-heading">
-            <p class="eyebrow">Direct callout</p>
-            <h2>Pkgly exists because Artifactory, Nexus, and RepoFlow leave obvious gaps</h2>
-            <p>
-              If you want modern package management without a self-hosted license bill or a bloated operator experience,
-              this is the alternative.
-            </p>
-          </div>
-          <div class="comparison-table-wrap">
-            <table class="comparison-table">
-              <caption>Practical comparison for self-hosted teams</caption>
-              <thead>
-                <tr>
-                  <th scope="col">Capability</th>
-                  <th scope="col">pkgly</th>
-                  <th scope="col">Artifactory</th>
-                  <th scope="col">Nexus</th>
-                  <th scope="col">RepoFlow</th>
-                </tr>
-              </thead>
-              <tbody>${comparisonRows}</tbody>
-            </table>
-          </div>
-        </section>
-
-        <section class="section" id="quickstart">
-          <div class="quickstart">
-            <div class="quickstart__copy">
-              <p class="eyebrow">Quickstart</p>
-              <h2>${siteContent.quickstart.title}</h2>
-              <p>${siteContent.quickstart.body}</p>
-              <div class="hero__actions">
-                ${renderCta(
-                  {
-                    label: siteContent.hero.quickstartCta.label,
-                    href: siteContent.hero.quickstartCta.href,
-                    iconSvg: quickstartIconSvg(),
-                    subtitle: "Open the install guide",
-                  },
-                  "button button--card button--secondary",
-                )}
-              </div>
-            </div>
-            <div class="terminal">
-              <div class="terminal__bar">
-                <span class="terminal__dot terminal__dot--close"></span>
-                <span class="terminal__dot terminal__dot--minimize"></span>
-                <span class="terminal__dot terminal__dot--maximize"></span>
-                <span class="terminal__title">Terminal</span>
-                <button class="terminal__copy" data-copy-terminal aria-label="Copy commands">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                </button>
-              </div>
-              <pre class="terminal__body"><code>${quickstartLines}</code></pre>
-            </div>
-          </div>
-        </section>
       </main>
 
-      <div class="lightbox" data-lightbox hidden aria-hidden="true">
-        <div class="lightbox__backdrop" data-lightbox-close></div>
-        <div class="lightbox__dialog" role="dialog" aria-modal="true" aria-label="Screenshot preview">
-          <button class="lightbox__close" type="button" data-lightbox-close aria-label="Close screenshot preview">
-            <span>Close</span>
-          </button>
-          <img class="lightbox__image" data-lightbox-image src="" alt="" />
-          <p class="lightbox__caption" data-lightbox-caption></p>
-        </div>
-      </div>
+      <dialog class="lightbox" data-lightbox aria-label="Screenshot preview">
+        <button class="lightbox__close" type="button" data-lightbox-close aria-label="Close screenshot preview">Close</button>
+        <img class="lightbox__image" data-lightbox-image src="" alt="" />
+        <p class="lightbox__caption" data-lightbox-caption></p>
+      </dialog>
 
       <footer class="site-footer">
         <span class="site-footer__brand">
@@ -585,9 +552,11 @@ export function renderLandingPage(root: HTMLElement) {
 
   const toggle = root.querySelector<HTMLButtonElement>("[data-theme-toggle]");
   const toggleLabel = root.querySelector<HTMLElement>("[data-theme-toggle-label]");
-  const lightbox = root.querySelector<HTMLElement>("[data-lightbox]");
+  const lightbox = root.querySelector<HTMLDialogElement>("[data-lightbox]");
   const lightboxImage = root.querySelector<HTMLImageElement>("[data-lightbox-image]");
   const lightboxCaption = root.querySelector<HTMLElement>("[data-lightbox-caption]");
+  const lightboxClose = root.querySelector<HTMLButtonElement>("[data-lightbox-close]");
+  let lightboxTrigger: HTMLButtonElement | null = null;
 
   applyTheme(getPreferredTheme() as "light" | "dark", toggleLabel, toggle);
 
@@ -602,35 +571,63 @@ export function renderLandingPage(root: HTMLElement) {
         return;
       }
 
+      lightboxTrigger = button;
       lightboxImage.src = button.dataset.zoomSrc ?? "";
       lightboxImage.alt = button.dataset.zoomAlt ?? "";
       lightboxCaption.textContent = button.dataset.zoomTitle ?? "";
-      lightbox.hidden = false;
-      lightbox.setAttribute("aria-hidden", "false");
+      if (typeof lightbox.showModal === "function") {
+        lightbox.showModal();
+      } else {
+        lightbox.setAttribute("open", "");
+      }
+      lightboxClose?.focus();
     });
   });
 
-  root.querySelectorAll<HTMLElement>("[data-lightbox-close]").forEach((element) => {
-    element.addEventListener("click", () => {
-      if (!lightbox || !lightboxImage || !lightboxCaption) {
-        return;
-      }
+  const closeLightbox = () => {
+    if (lightbox && lightbox.open) {
+      lightbox.close();
+    }
+  };
 
-      lightbox.hidden = true;
-      lightbox.setAttribute("aria-hidden", "true");
-      lightboxImage.src = "";
-      lightboxImage.alt = "";
-      lightboxCaption.textContent = "";
-    });
+  lightboxClose?.addEventListener("click", closeLightbox);
+  lightbox?.addEventListener("click", (event) => {
+    if (event.target === lightbox) {
+      closeLightbox();
+    }
+  });
+  lightbox?.addEventListener("close", () => {
+    if (!lightboxImage || !lightboxCaption) {
+      return;
+    }
+
+    lightboxImage.src = "";
+    lightboxImage.alt = "";
+    lightboxCaption.textContent = "";
+    lightboxTrigger?.focus();
+    lightboxTrigger = null;
   });
 
   root.querySelectorAll<HTMLButtonElement>("[data-copy-terminal]").forEach((button) => {
-    button.addEventListener("click", () => {
-      navigator.clipboard.writeText(quickstartCopyText);
-      button.dataset.copied = "true";
-      setTimeout(() => {
-        delete button.dataset.copied;
-      }, 2000);
+    button.addEventListener("click", async () => {
+      const status = root.querySelector<HTMLElement>("[data-copy-status]");
+
+      try {
+        await navigator.clipboard.writeText(quickstartCopyText);
+        button.dataset.copied = "true";
+        button.setAttribute("aria-label", "Commands copied");
+        if (status) {
+          status.textContent = "Commands copied";
+        }
+        setTimeout(() => {
+          delete button.dataset.copied;
+          button.setAttribute("aria-label", "Copy commands");
+        }, 2000);
+      } catch {
+        if (status) {
+          status.textContent = "Could not copy commands";
+        }
+      }
     });
   });
 }

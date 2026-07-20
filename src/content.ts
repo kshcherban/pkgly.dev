@@ -12,6 +12,18 @@ export type DemoCard = {
   image: string;
   previewImage: string;
   alt: string;
+  width: number;
+  height: number;
+};
+
+export type ComparisonValue = string | boolean;
+
+export type ComparisonRow = {
+  label: string;
+  pkgly: ComparisonValue;
+  artifactory: ComparisonValue;
+  nexus: ComparisonValue;
+  repoflow: ComparisonValue;
 };
 
 export type CompetitorCallout = {
@@ -57,6 +69,8 @@ export const siteContent = {
       previewImage: "/images/previews/overview.webp",
       alt: "Pkgly repository overview UI",
       title: "Pkgly repository overview",
+      width: 1280,
+      height: 786,
     },
     primaryCta: {
       label: "Star on GitHub",
@@ -172,6 +186,8 @@ export const siteContent = {
       image: "/images/search-view.png",
       previewImage: "/images/previews/search-view.webp",
       alt: "Pkgly package search view",
+      width: 1280,
+      height: 776,
     },
     {
       eyebrow: "Repositories",
@@ -180,6 +196,8 @@ export const siteContent = {
       image: "/images/repository-view.png",
       previewImage: "/images/previews/repository-view.webp",
       alt: "Pkgly repository detail view",
+      width: 1280,
+      height: 786,
     },
     {
       eyebrow: "Admin",
@@ -188,6 +206,8 @@ export const siteContent = {
       image: "/images/admin-repositories.png",
       previewImage: "/images/previews/admin-repositories.webp",
       alt: "Pkgly admin repository management view",
+      width: 1280,
+      height: 780,
     },
   ] satisfies DemoCard[],
   competitorCallouts: [
@@ -228,9 +248,9 @@ export const siteContent = {
     {
       label: "Repository modes",
       pkgly: "Hosted, proxy, virtual",
-      artifactory: "Local, remote, virtual",
-      nexus: "Hosted, proxy, group",
-      repoflow: "Local, remote, virtual",
+      artifactory: "Hosted, proxy, virtual",
+      nexus: "Hosted, proxy, virtual",
+      repoflow: "Hosted, proxy, virtual",
     },
     {
       label: "Hosted format coverage",
@@ -255,24 +275,24 @@ export const siteContent = {
     },
     {
       label: "S3 artifact storage",
-      pkgly: "Yes, with local disk cache",
-      artifactory: "Yes",
-      nexus: "Blob storage options",
-      repoflow: "No",
+      pkgly: true,
+      artifactory: true,
+      nexus: true,
+      repoflow: false,
     },
     {
       label: "SSO",
-      pkgly: "Yes",
-      artifactory: "Enterprise access control",
-      nexus: "Pro includes SSO",
-      repoflow: "Yes, SSO + LDAP",
+      pkgly: true,
+      artifactory: true,
+      nexus: true,
+      repoflow: true,
     },
     {
       label: "Audit trail",
-      pkgly: "Yes",
-      artifactory: "Yes on paid tiers",
-      nexus: "Pro audit APIs",
-      repoflow: "No",
+      pkgly: true,
+      artifactory: true,
+      nexus: true,
+      repoflow: true,
     },
     {
       label: "Package cleanup / retention",
@@ -283,10 +303,10 @@ export const siteContent = {
     },
     {
       label: "Webhooks",
-      pkgly: "Package publish/delete webhooks",
-      artifactory: "Platform integrations and alerts",
-      nexus: "Customized workflow automation",
-      repoflow: "No",
+      pkgly: true,
+      artifactory: true,
+      nexus: true,
+      repoflow: false,
     },
     {
       label: "Migration help",
@@ -295,7 +315,7 @@ export const siteContent = {
       nexus: "Artifactory migration services advertised",
       repoflow: "Migration guides for Artifactory and Nexus",
     },
-  ],
+  ] satisfies ComparisonRow[],
   quickstart: {
     title: "Get a working instance up fast",
     body: "Just run a docker compose command and open the UI to get a working instance of Pkgly up in minutes.",
@@ -320,6 +340,6 @@ export const siteContent = {
       href: "https://docs.pkgly.dev/quickstart.html",
     },
   ] satisfies Cta[],
-  // sourceNote:
-    // "Checked against official vendor pages on April 30, 2026. Vendor packaging changes; verify pricing before purchase.",
+  sourceNote:
+    "Checked against official vendor pages on July 20, 2026. Vendor packaging changes; verify pricing before purchase.",
 };

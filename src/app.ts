@@ -128,6 +128,10 @@ function getPreferredTheme() {
     return storedTheme;
   }
 
+  if (typeof window !== "undefined" && window.matchMedia) {
+    return window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+  }
+
   return "dark";
 }
 
@@ -151,6 +155,11 @@ function applyTheme(theme: "light" | "dark", toggleLabel: HTMLElement | null, to
   if (icon) {
     icon.setAttribute("data-theme-icon", theme === "dark" ? "sun" : "moon");
     icon.innerHTML = theme === "dark" ? sunIconSvg() : moonIconSvg();
+  }
+
+  const themeColor = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
+  if (themeColor) {
+    themeColor.setAttribute("content", theme === "dark" ? "#07120e" : "#eff7f1");
   }
 }
 

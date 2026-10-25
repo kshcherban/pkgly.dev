@@ -140,3 +140,7 @@ vite.config.ts.timestamp-*
 
 .playwright-mcp/
 .DS_Store
+
+# Wrangler local state and secrets
+.wrangler/
+.dev.vars*

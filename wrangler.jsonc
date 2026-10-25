@@ -1,0 +1,10 @@
+// ABOUTME: Wrangler configuration for serving the built landing page as static assets.
+// ABOUTME: The custom domain is attached in the Cloudflare dashboard so CI needs no DNS permissions.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "pkgly-landing",
+  "compatibility_date": "2026-10-25",
+  "assets": {
+    "directory": "./dist"
+  }
+}

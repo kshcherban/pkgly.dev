@@ -53,9 +53,9 @@ export const siteContent = {
   seo: {
     title: "pkgly - Open-source self-hosted package registry",
     description:
-      "Open-source self-hosted package registry and artifact manager for npm, Docker, Maven, Python, Cargo, NuGet, S3 storage, ACLs, SSO, cleanup policies, webhooks, and more.",
+      "Open-source self-hosted package registry and artifact manager with npm, Docker, Maven, Python, Cargo, NuGet, S3 storage, ACLs, SSO, cleanup policies, webhooks, and MCP tools for AI assistants.",
     keywords:
-      "self-hosted package registry, open-source artifact manager, Artifactory alternative, Nexus alternative, RepoFlow alternative, npm registry, Docker registry, Maven repository, PyPI repository",
+      "self-hosted package registry, open-source artifact manager, Artifactory alternative, Nexus alternative, RepoFlow alternative, npm registry, Docker registry, Maven repository, PyPI repository, MCP server",
     url: "https://pkgly.dev/",
     image: "https://pkgly.dev/images/og-card.png",
   },
@@ -95,6 +95,7 @@ export const siteContent = {
     "Repository cleanup policies",
     "Webhooks for packages",
     "Pkgly CLI",
+    "MCP server",
   ],
   spotlight: {
     label: "Core features",
@@ -107,6 +108,7 @@ export const siteContent = {
       "Repository cleanup policies",
       "Webhooks for package events",
       "Pkgly CLI for automation",
+      "MCP tools for AI assistants: package search, uploads, and downloads",
     ],
     benchmarkLabel: "Verified mixed-package workload",
     benchmarkValue: "200 RPS",
@@ -132,7 +134,7 @@ export const siteContent = {
     clients: {
       label: "Clients",
       title: "Developers, CI, and browsers",
-      body: "Package managers, automation, and admins connect to one pkgly endpoint.",
+      body: "Package managers, automation, and admins connect to one pkgly endpoint. AI assistants use the CLI's stdio MCP server with your API token and repository scopes.",
     },
     app: {
       label: "Runtime",
@@ -338,6 +340,10 @@ export const siteContent = {
     {
       label: "Quickstart",
       href: "https://docs.pkgly.dev/quickstart.html",
+    },
+    {
+      label: "MCP setup",
+      href: "https://docs.pkgly.dev/cli/mcp.html",
     },
   ] satisfies Cta[],
   sourceNote:

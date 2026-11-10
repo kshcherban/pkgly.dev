@@ -144,3 +144,5 @@ vite.config.ts.timestamp-*
 # Wrangler local state and secrets
 .wrangler/
 .dev.vars*
+
+.hallmark/

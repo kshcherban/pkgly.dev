@@ -1,6 +1,7 @@
 // ABOUTME: Renders the pkgly landing page and wires lightweight browser behavior.
 // ABOUTME: Applies SEO metadata, theme state, screenshot lightbox, and copy actions.
 import { type ComparisonValue, siteContent } from "./content";
+import { getTabIndex } from "./tabs";
 
 function githubMarkSvg() {
   return `
@@ -28,20 +29,6 @@ function docsIconSvg() {
         stroke-linejoin="round" />
       <path d="M14.75 4.75V9H19" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
       <path d="M8.5 12.25h7M8.5 15.75h7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-    </svg>
-  `;
-}
-
-function quickstartIconSvg() {
-  return `
-    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-      <path
-        d="M7.5 6.25h9A1.75 1.75 0 0 1 18.25 8v8A1.75 1.75 0 0 1 16.5 17.75h-9A1.75 1.75 0 0 1 5.75 16V8A1.75 1.75 0 0 1 7.5 6.25Z"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.7" />
-      <path d="M9.5 11.25 12 13.75l2.5-2.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-      <path d="M12 9v4.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
     </svg>
   `;
 }
@@ -104,7 +91,6 @@ function renderArchitectureNode(
 
   return `
     <article class="architecture-node ${className}">
-      <p class="architecture-node__label">${node.label}</p>
       <h3>${node.title}</h3>
       <p>${node.body}</p>
       ${items}
@@ -264,26 +250,23 @@ export function renderLandingPage(root: HTMLElement) {
   applySeoMetadata();
 
   const heroCtas = `
-    <a class="button button--primary hero__quickstart" href="#quickstart">
-      <span class="button__inline-icon">${quickstartIconSvg()}</span>
-      Run quickstart
-    </a>
     <a class="button button--secondary hero__secondary" href="${siteContent.hero.docsCta.href}" target="_blank" rel="noreferrer">
       <span class="button__inline-icon">${docsIconSvg()}</span>
       ${siteContent.hero.docsCta.label}
     </a>
-    <a class="button button--secondary hero__secondary" href="${siteContent.hero.primaryCta.href}" target="_blank" rel="noreferrer">
+    <a class="hero__source" href="${siteContent.hero.primaryCta.href}" target="_blank" rel="noreferrer">
       <span class="button__inline-icon">${githubMarkSvg()}</span>
-      GitHub
+      Free and open source
     </a>
   `;
 
   const packageTypes = siteContent.packageTypes
-    .map((packageType) => `<li class="package-strip__item">${packageType}</li>`)
-    .join("");
-
-  const statChips = siteContent.statChips
-    .map((chip) => `<li class="chip-list__item">${chip}</li>`)
+    .map((packageType) => `
+      <li class="package-strip__item">
+        <img src="${packageType.icon}" alt="" width="40" height="40" loading="lazy" decoding="async" />
+        <span>${packageType.name}</span>
+      </li>
+    `)
     .join("");
 
   const pillars = siteContent.pillars
@@ -297,16 +280,20 @@ export function renderLandingPage(root: HTMLElement) {
     )
     .join("");
 
-  const spotlightFeatures = siteContent.spotlight.features
-    .map((feature) => `<li>${feature}</li>`)
+  const demoTabs = siteContent.demoCards
+    .map((demo, index) => `
+      <button class="product-tab" type="button" role="tab" id="product-tab-${index}"
+        aria-controls="product-panel-${index}" aria-selected="${index === 0}" tabindex="${index === 0 ? 0 : -1}">
+        ${demo.eyebrow}
+      </button>
+    `)
     .join("");
-
   const demoCards = siteContent.demoCards
     .map(
-      (demo) => `
-        <article class="demo-card">
+      (demo, index) => `
+        <article class="demo-card" role="tabpanel" id="product-panel-${index}"
+          aria-labelledby="product-tab-${index}" ${index === 0 ? "" : "hidden"}>
           <div class="demo-card__copy">
-            <p class="eyebrow">${demo.eyebrow}</p>
             <h3>${demo.title}</h3>
             <p>${demo.body}</p>
           </div>
@@ -335,10 +322,9 @@ export function renderLandingPage(root: HTMLElement) {
     .map(
       (competitor) => `
         <article class="competitor-card">
-          <p class="eyebrow">Against ${competitor.name}</p>
-          <h3>${competitor.priceLabel}</h3>
-          <p>${competitor.detail}</p>
-          <a href="${competitor.sourceHref}" target="_blank" rel="noreferrer">Official source</a>
+          <h3>${competitor.name}</h3>
+          <p class="competitor-card__price">${competitor.priceLabel}</p>
+          <a href="${competitor.sourceHref}" target="_blank" rel="noreferrer" aria-label="${competitor.name} pricing source">Pricing source</a>
         </article>
       `,
     )
@@ -382,6 +368,7 @@ export function renderLandingPage(root: HTMLElement) {
       <header class="site-header">
         <a class="wordmark" href="#top" aria-label="${siteContent.hero.wordmark}">
           <img src="/wordmark__image.svg" alt="pkgly logo" class="wordmark__image" width="256" height="256" />
+          <span class="wordmark__name">${siteContent.hero.wordmark}</span>
         </a>
         <div class="site-header__actions">
           <nav class="header-nav" aria-label="Primary">
@@ -399,9 +386,18 @@ export function renderLandingPage(root: HTMLElement) {
       <main id="top">
         <section class="hero section">
           <div class="hero__copy">
-            <p class="eyebrow">Public + private packages without the license tax</p>
             <h1>${siteContent.hero.title}</h1>
             <p class="hero__subtitle">${siteContent.hero.subtitle}</p>
+            <div class="hero__install" data-install>
+              <div class="install-command">
+                <pre><code>${quickstartCopyText}</code></pre>
+                <button class="install-command__copy" type="button" data-copy-terminal aria-label="Copy install command">
+                  <span data-copy-label>Copy</span>
+                </button>
+              </div>
+              <p class="hero__requirements">Requires Docker and Docker Compose.</p>
+              <p class="sr-only" data-copy-status aria-live="polite"></p>
+            </div>
             <div class="hero__actions hero__actions--hero">${heroCtas}</div>
           </div>
           <div class="hero__visual">
@@ -424,47 +420,26 @@ export function renderLandingPage(root: HTMLElement) {
                 <span class="hero__zoom-label">Zoom screenshot</span>
               </button>
             </div>
-            <ul class="chip-list chip-list--hero" aria-label="Highlights">${statChips}</ul>
           </div>
         </section>
 
         <section class="section section--compact">
           <div class="section-heading">
-            <p class="eyebrow">Works where your team already ships</p>
-            <h2>One repository manager for the most popular package types</h2>
+            <h2>Your package formats together</h2>
           </div>
           <ul class="package-strip" aria-label="Supported package ecosystems">${packageTypes}</ul>
         </section>
 
-        <section class="section" id="quickstart">
-          <div class="quickstart">
-            <div class="quickstart__copy">
-              <p class="eyebrow">Quickstart</p>
-              <h2>${siteContent.quickstart.title}</h2>
-              <p>${siteContent.quickstart.body}</p>
-              <a class="button button--primary" href="${siteContent.hero.quickstartCta.href}" target="_blank" rel="noreferrer">
-                Open the install guide
-              </a>
-            </div>
-            <div class="terminal">
-              <div class="terminal__bar">
-                <span class="terminal__dot terminal__dot--close"></span>
-                <span class="terminal__dot terminal__dot--minimize"></span>
-                <span class="terminal__dot terminal__dot--maximize"></span>
-                <span class="terminal__title">Terminal</span>
-                <button class="terminal__copy" data-copy-terminal aria-label="Copy commands">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-                </button>
-              </div>
-              <pre class="terminal__body"><code>${quickstartLines}</code></pre>
-              <p class="sr-only" data-copy-status aria-live="polite"></p>
-            </div>
+        <section class="section" id="product-demo">
+          <div class="section-heading">
+            <h2>See your registry at work</h2>
           </div>
+          <div class="product-tabs" role="tablist" aria-label="Product views">${demoTabs}</div>
+          <div class="demo-grid">${demoCards}</div>
         </section>
 
-        <section class="section section--alt" id="architecture">
+        <section class="section" id="architecture">
           <div class="section-heading">
-            <p class="eyebrow">${siteContent.architecture.label}</p>
             <h2>${siteContent.architecture.title}</h2>
             <p>${siteContent.architecture.body}</p>
           </div>
@@ -477,24 +452,27 @@ export function renderLandingPage(root: HTMLElement) {
           </div>
         </section>
 
-        <section class="section section--alt" id="product-demo">
+        <section class="section" aria-labelledby="capabilities-title">
           <div class="section-heading">
-            <p class="eyebrow">Product demo</p>
-            <h2>A cleaner path from search to install to administration</h2>
+            <h2 id="capabilities-title">${siteContent.spotlight.title}</h2>
           </div>
-          <div class="demo-grid">${demoCards}</div>
+          <div class="why-grid">
+            <div class="pillar-grid">${pillars}</div>
+            <aside class="spotlight-card" aria-label="Performance benchmark">
+              <strong class="benchmark-value">${siteContent.spotlight.benchmarkValue}</strong>
+              <p>${siteContent.spotlight.benchmarkLabel}</p>
+              <p>${siteContent.spotlight.benchmarkDetail}</p>
+            </aside>
+          </div>
         </section>
 
-        <section class="section section--alt" id="comparison">
+        <section class="section" id="comparison">
           <div class="section-heading">
-            <p class="eyebrow">Direct callout</p>
-            <h2>Pkgly exists because Artifactory, Nexus, and RepoFlow leave obvious gaps</h2>
-            <p>
-              If you want modern package management without a self-hosted license bill or a bloated operator experience,
-              this is the alternative.
-            </p>
+            <h2>Compare self-hosted registries</h2>
+            <p>Pkgly has no license fee, including for commercial use.</p>
           </div>
           <div class="competitor-grid">${competitorCallouts}</div>
+          <p class="source-note">${siteContent.sourceNote}</p>
           <details class="comparison-details">
             <summary>View the detailed comparison</summary>
             <div class="comparison-table-wrap">
@@ -512,34 +490,38 @@ export function renderLandingPage(root: HTMLElement) {
                 <tbody>${comparisonRows}</tbody>
               </table>
             </div>
-            <p class="source-note">${siteContent.sourceNote}</p>
           </details>
         </section>
 
-        <section class="section" aria-labelledby="capabilities-title">
-          <div class="section-heading">
-            <p class="eyebrow">Why pkgly</p>
-            <h2 id="capabilities-title">Built for developers, OSS maintainers, and platform teams who want control</h2>
-          </div>
-          <div class="why-grid">
-            <aside class="spotlight-card">
-              <p class="eyebrow">${siteContent.spotlight.label}</p>
-              <h3>${siteContent.spotlight.title}</h3>
-              <ul class="spotlight-card__list">${spotlightFeatures}</ul>
-              <div class="spotlight-card__metric">
-                <span>${siteContent.spotlight.benchmarkLabel}</span>
-                <strong>${siteContent.spotlight.benchmarkValue}</strong>
-                <small>${siteContent.spotlight.benchmarkDetail}</small>
+        <section class="section" id="quickstart">
+          <div class="quickstart">
+            <div class="quickstart__copy">
+              <h2>${siteContent.quickstart.title}</h2>
+              <p>${siteContent.quickstart.body}</p>
+              <a class="button button--primary" href="${siteContent.hero.quickstartCta.href}" target="_blank" rel="noreferrer">
+                Open the install guide
+              </a>
+            </div>
+            <div class="terminal" data-install>
+              <div class="terminal__bar">
+                <span class="terminal__dot terminal__dot--close" aria-hidden="true"></span>
+                <span class="terminal__dot terminal__dot--minimize" aria-hidden="true"></span>
+                <span class="terminal__dot terminal__dot--maximize" aria-hidden="true"></span>
+                <span class="terminal__title">Terminal</span>
+                <button class="terminal__copy" data-copy-terminal aria-label="Copy commands">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                </button>
               </div>
-            </aside>
-            <div class="pillar-grid">${pillars}</div>
+              <pre class="terminal__body"><code>${quickstartLines}</code></pre>
+              <p class="sr-only" data-copy-status aria-live="polite"></p>
+            </div>
           </div>
         </section>
       </main>
 
       <dialog class="lightbox" data-lightbox aria-label="Screenshot preview">
         <button class="lightbox__close" type="button" data-lightbox-close aria-label="Close screenshot preview">Close</button>
-        <img class="lightbox__image" data-lightbox-image src="" alt="" />
+        <img class="lightbox__image" data-lightbox-image src="${siteContent.hero.screenshot.previewImage}" alt="${siteContent.hero.screenshot.alt}" />
         <p class="lightbox__caption" data-lightbox-caption></p>
       </dialog>
 
@@ -551,6 +533,7 @@ export function renderLandingPage(root: HTMLElement) {
             class="wordmark__image wordmark__image--footer"
             width="256"
             height="256" />
+          <span class="wordmark__name">${siteContent.hero.wordmark}</span>
         </span>
         <nav class="footer-nav" aria-label="Footer">
           ${footerLinks}
@@ -568,6 +551,28 @@ export function renderLandingPage(root: HTMLElement) {
   let lightboxTrigger: HTMLButtonElement | null = null;
 
   applyTheme(getPreferredTheme() as "light" | "dark", toggleLabel, toggle);
+
+  const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+  const panels = Array.from(root.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+  const selectTab = (index: number) => {
+    tabs.forEach((tab, tabIndex) => {
+      tab.setAttribute("aria-selected", String(tabIndex === index));
+      tab.tabIndex = tabIndex === index ? 0 : -1;
+      panels[tabIndex].hidden = tabIndex !== index;
+    });
+  };
+  tabs.forEach((tab, index) => {
+    tab.addEventListener("click", () => selectTab(index));
+    tab.addEventListener("keydown", (event) => {
+      const nextIndex = getTabIndex(event.key, index, tabs.length);
+      if (nextIndex === null) {
+        return;
+      }
+      event.preventDefault();
+      selectTab(nextIndex);
+      tabs[nextIndex].focus({ preventScroll: true });
+    });
+  });
 
   toggle?.addEventListener("click", () => {
     const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
@@ -618,19 +623,27 @@ export function renderLandingPage(root: HTMLElement) {
   });
 
   root.querySelectorAll<HTMLButtonElement>("[data-copy-terminal]").forEach((button) => {
+    const label = button.getAttribute("aria-label") ?? "Copy commands";
+    const copyLabel = button.querySelector<HTMLElement>("[data-copy-label]");
     button.addEventListener("click", async () => {
-      const status = root.querySelector<HTMLElement>("[data-copy-status]");
+      const status = button.closest("[data-install]")?.querySelector<HTMLElement>("[data-copy-status]");
 
       try {
         await navigator.clipboard.writeText(quickstartCopyText);
         button.dataset.copied = "true";
         button.setAttribute("aria-label", "Commands copied");
+        if (copyLabel) {
+          copyLabel.textContent = "Copied";
+        }
         if (status) {
           status.textContent = "Commands copied";
         }
         setTimeout(() => {
           delete button.dataset.copied;
-          button.setAttribute("aria-label", "Copy commands");
+          button.setAttribute("aria-label", label);
+          if (copyLabel) {
+            copyLabel.textContent = "Copy";
+          }
         }, 2000);
       } catch {
         if (status) {

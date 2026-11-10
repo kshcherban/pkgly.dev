@@ -63,7 +63,7 @@ export const siteContent = {
     wordmark: "pkgly",
     title: "Self-hosted package registry",
     subtitle:
-      "Manage public and private packages across npm, Docker / OCI, Maven, Python, and more with hosted, proxy, and virtual repositories, S3 storage, ACLs, and SSO.",
+      "Host private packages and cache public registries on your infrastructure.",
     screenshot: {
       image: "/images/overview.png",
       previewImage: "/images/previews/overview.webp",
@@ -99,7 +99,7 @@ export const siteContent = {
   ],
   spotlight: {
     label: "Core features",
-    title: "Practical features for teams that need control",
+    title: "Control access. Keep packages moving.",
     features: [
       "Hosted, proxy, and virtual repositories",
       "S3 storage with local disk caching",
@@ -115,43 +115,42 @@ export const siteContent = {
     benchmarkDetail: "4 vCPU / 8 GB RAM server",
   } satisfies Spotlight,
   packageTypes: [
-    "npm",
-    "Docker / OCI",
-    "Helm",
-    "Maven",
-    "Python",
-    "Cargo",
-    "RubyGems",
-    "Go",
-    "Debian",
-    "PHP Composer",
-    "Nuget",
+    { name: "npm", icon: "/images/npm.svg" },
+    { name: "Go", icon: "/images/go.svg" },
+    { name: "Helm", icon: "/images/helm.svg" },
+    { name: "Maven", icon: "/images/maven.svg" },
+    { name: "Python", icon: "/images/pypi.svg" },
+    { name: "Cargo", icon: "/images/cargo.svg" },
+    { name: "RubyGems", icon: "/images/rubygems.svg" },
+    { name: "Docker / OCI", icon: "/images/docker.svg" },
+    { name: "Debian", icon: "/images/debian.svg" },
+    { name: "PHP Composer", icon: "/images/composer.svg" },
+    { name: "NuGet", icon: "/images/nuget.svg" },
   ],
   architecture: {
     label: "Architecture",
-    title: "Small surface area, clear storage boundaries",
-    body: "Pkgly runs as a Rust application with the Vue.js frontend embedded in the server. Runtime state lives in PostgreSQL, while package artifacts are stored on local disk or S3.",
+    title: "A small stack you can operate",
+    body: "One Rust service, an embedded Vue.js UI, PostgreSQL, and your choice of artifact storage.",
     clients: {
       label: "Clients",
-      title: "Developers, CI, and browsers",
-      body: "Package managers, automation, and admins connect to one pkgly endpoint. AI assistants use the CLI's stdio MCP server with your API token and repository scopes.",
+      title: "Package managers and CI",
+      body: "One endpoint for developers, automation, and the browser.",
     },
     app: {
       label: "Runtime",
       title: "Rust app",
-      body: "Serves registry traffic, API requests, and the embedded Vue.js frontend from one deployable service.",
-      items: ["Registry APIs", "Embedded Vue.js frontend", "Auth and repository rules"],
+      body: "Registry APIs, authentication, and the embedded Vue.js UI.",
     },
     stores: [
       {
         label: "State",
         title: "PostgreSQL",
-        body: "Users, repositories, permissions, package metadata, and application state.",
+        body: "Users, permissions, and package metadata.",
       },
       {
         label: "Artifacts",
         title: "Local disk or S3",
-        body: "Package blobs and cached artifacts stay in the storage backend you choose.",
+        body: "Package artifacts, with local disk caching.",
       },
     ],
   } satisfies {
@@ -164,27 +163,37 @@ export const siteContent = {
   },
   pillars: [
     {
-      title: "Open-source by default",
-      body: "Run it without a self-hosted license bill and keep full control over your packages, infrastructure, and upgrade path. This is the core of open-source artifact management.",
+      title: "Access and identity",
+      body: "SSO, scoped tokens, repository ACLs, and audit logs.",
     },
     {
-      title: "One home for mixed ecosystems",
-      body: "Manage public and private packages across the ecosystems teams actually use instead of bolting together multiple single-purpose registries. Centralize your self-hosted package registry.",
+      title: "Storage and retention",
+      body: "S3 or local disk, caching, and per-repository cleanup policies.",
     },
     {
-      title: "Enterprise features without enterprise drag",
-      body: "Ship with token auth, SSO support, audit logging, search, and S3-backed storage without inheriting a bloated operator experience. Enterprise features for your self-hosted package registry.",
+      title: "Automation and AI tools",
+      body: "Package webhooks, the Pkgly CLI, and scoped MCP tools for search, uploads, and downloads.",
     },
     {
-      title: "Built for real workloads",
-      body: "Pkgly already handles a verified mixed-package test workload at 200 RPS on modest hardware, and the product surface stays simple.",
+      title: "An open migration path",
+      body: "An Artifactory migration script and source code you can inspect.",
     },
   ],
   demoCards: [
     {
+      eyebrow: "Demo",
+      title: "Explore pkgly in action",
+      body: "Watch a walkthrough of the registry interface.",
+      image: "/images/demo.gif",
+      previewImage: "/images/demo.gif",
+      alt: "Animated walkthrough of the pkgly registry interface",
+      width: 1120,
+      height: 700,
+    },
+    {
       eyebrow: "Search",
-      title: "Find packages without hunting through storage paths",
-      body: "Search packages, tags, and metadata from one UI instead of sending users into repo-specific dead ends.",
+      title: "Find the package you need",
+      body: "Search packages, tags, and metadata across your repositories.",
       image: "/images/search-view.png",
       previewImage: "/images/previews/search-view.webp",
       alt: "Pkgly package search view",
@@ -193,8 +202,8 @@ export const siteContent = {
     },
     {
       eyebrow: "Repositories",
-      title: "Browse hosted and proxy repositories from one control plane",
-      body: "Show developers the repositories they need, while platform teams keep storage, auth, and repository behavior under control.",
+      title: "One place for every repository",
+      body: "Browse hosted, proxy, and virtual repositories from one UI.",
       image: "/images/repository-view.png",
       previewImage: "/images/previews/repository-view.webp",
       alt: "Pkgly repository detail view",
@@ -203,8 +212,8 @@ export const siteContent = {
     },
     {
       eyebrow: "Admin",
-      title: "Manage repositories, packages, and users without the usual bloat",
-      body: "Repository setup, package visibility, and user administration live in one UI with a modern workflow instead of an archaeology dig.",
+      title: "Keep administration straightforward",
+      body: "Manage repositories, package visibility, and users in the same interface.",
       image: "/images/admin-repositories.png",
       previewImage: "/images/previews/admin-repositories.webp",
       alt: "Pkgly admin repository management view",
@@ -221,8 +230,8 @@ export const siteContent = {
     },
     {
       name: "Nexus",
-      priceLabel: "Free CE, quote for self-hosted Pro",
-      detail: "Sonatype lists a free Community Edition and routes air-gapped or self-hosted Pro deployments to quote.",
+      priceLabel: "Free CE; Pro from $7,500/year",
+      detail: "Community Edition is free. Pro adds SSO, audit logs, and support.",
       sourceHref: "https://www.sonatype.com/products/pricing",
     },
     {
@@ -237,7 +246,7 @@ export const siteContent = {
       label: "Self-hosted commercial cost",
       pkgly: "$0",
       artifactory: "From $27,000/year",
-      nexus: "Free CE; Pro quote required",
+      nexus: "Free CE; Pro from $7,500/year",
       repoflow: "From $1,999/year",
     },
     {
@@ -269,11 +278,11 @@ export const siteContent = {
       repoflow: "Store and proxy across major package types",
     },
     {
-      label: "Virtual / group repositories",
-      pkgly: "Virtual repositories",
-      artifactory: "Virtual repositories",
-      nexus: "Group repositories",
-      repoflow: "Virtual repositories",
+      label: "Virtual repositories",
+      pkgly: true,
+      artifactory: true,
+      nexus: true,
+      repoflow: true,
     },
     {
       label: "S3 artifact storage",
@@ -319,13 +328,10 @@ export const siteContent = {
     },
   ] satisfies ComparisonRow[],
   quickstart: {
-    title: "Get a working instance up fast",
-    body: "Just run a docker compose command and open the UI to get a working instance of Pkgly up in minutes.",
+    title: "Run pkgly on your infrastructure",
+    body: "With Docker running, run the installer, then open the setup URL it prints.",
     commands: [
-      "git clone https://github.com/kshcherban/pkgly.git",
-      "cd pkgly",
-      "docker compose up --detach",
-      "open http://localhost:8000/admin/install",
+      "curl -fsSL https://pkgly.dev/install.sh | bash",
     ],
   },
   footerLinks: [
@@ -347,5 +353,5 @@ export const siteContent = {
     },
   ] satisfies Cta[],
   sourceNote:
-    "Checked against official vendor pages on July 20, 2026. Vendor packaging changes; verify pricing before purchase.",
+    "Self-hosted pricing checked November 10, 2026. Feature comparison checked July 20, 2026. Plans and features vary by edition.",
 };

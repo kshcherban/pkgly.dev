@@ -18,27 +18,65 @@ function setupPage() {
 }
 
 describe("renderLandingPage", () => {
-  it("prioritizes the inline quickstart over secondary hero actions", () => {
+  it("leads with a copyable installer before secondary hero links", () => {
     setupPage();
 
+    const install = document.querySelector(".hero [data-install]");
+    const command = install?.querySelector("code");
+    const copy = install?.querySelector('button[aria-label="Copy install command"]');
+    expect(command?.textContent).toBe("curl -fsSL https://pkgly.dev/install.sh | bash");
+    expect(copy).not.toBeNull();
+    expect(install?.textContent).toContain("Requires Docker and Docker Compose.");
     const actions = Array.from(document.querySelectorAll(".hero__actions--hero a"));
     expect(actions.map((action) => action.getAttribute("href"))).toEqual([
-      "#quickstart",
       siteContent.hero.docsCta.href,
       siteContent.hero.primaryCta.href,
     ]);
-    expect(actions[0]?.className).toContain("button--primary");
+    expect(install?.compareDocumentPosition(actions[0])).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(document.querySelectorAll("[data-install] [data-copy-status]")).toHaveLength(2);
   });
 
-  it("places quickstart before product proof and comparison", () => {
+  it("ends with quickstart after product proof and comparison", () => {
     setupPage();
 
     const quickstart = document.querySelector("#quickstart");
     const demo = document.querySelector("#product-demo");
     const comparison = document.querySelector("#comparison");
 
-    expect(quickstart?.compareDocumentPosition(demo as Node)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(comparison?.compareDocumentPosition(quickstart as Node)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
     expect(demo?.compareDocumentPosition(comparison as Node)).toBe(Node.DOCUMENT_POSITION_FOLLOWING);
+    expect(quickstart).toBe(document.querySelector("main > section:last-child"));
+  });
+
+  it("shows the hosted installer as the single quickstart command", () => {
+    setupPage();
+
+    const commands = Array.from(document.querySelectorAll("#quickstart .terminal__cmd"));
+    expect(commands.map((command) => command.textContent)).toEqual([
+      "curl -fsSL https://pkgly.dev/install.sh | bash",
+    ]);
+  });
+
+  it("switches the visible product screenshot with accessible tabs", () => {
+    const root = setupPage();
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[role="tab"]'));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>('[role="tabpanel"]'));
+
+    expect(tabs.map((tab) => tab.textContent?.trim())).toEqual(["Demo", "Search", "Repositories", "Admin"]);
+    expect(panels.filter((panel) => !panel.hidden)).toHaveLength(1);
+    tabs[1].click();
+    expect(tabs[1].getAttribute("aria-selected")).toBe("true");
+    expect(tabs[0].tabIndex).toBe(-1);
+    expect(panels[0].hidden).toBe(true);
+    expect(panels[1].hidden).toBe(false);
+    expect(tabs[1].getAttribute("aria-controls")).toBe(panels[1].id);
+
+    tabs[1].dispatchEvent(new KeyboardEvent("keydown", { key: "End", bubbles: true }));
+    expect(document.activeElement).toBe(tabs[3]);
+    expect(panels[3].hidden).toBe(false);
+    tabs[3].dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }));
+    expect(document.activeElement).toBe(tabs[0]);
+    expect(panels.filter((panel) => !panel.hidden)).toEqual([panels[0]]);
   });
 
   it("reserves space for demo screenshots before they load", () => {
@@ -50,6 +88,29 @@ describe("renderLandingPage", () => {
     for (const image of images) {
       expect(image.getAttribute("width")).not.toBeNull();
       expect(image.getAttribute("height")).not.toBeNull();
+    }
+  });
+
+  it("opens with the animated registry walkthrough and offers its full-size preview", () => {
+    setupPage();
+
+    const panel = document.querySelector<HTMLElement>('[role="tabpanel"]:not([hidden])');
+    const image = panel?.querySelector("img");
+    expect(image?.getAttribute("src")).toBe("/images/demo.gif");
+    expect(image?.getAttribute("alt")).toContain("walkthrough");
+    expect(panel?.querySelector("[data-zoom-src]")?.getAttribute("data-zoom-src")).toBe("/images/demo.gif");
+  });
+
+  it("pairs every supported package format with a local technology icon", () => {
+    setupPage();
+
+    const formats = Array.from(document.querySelectorAll(".package-strip li"));
+    expect(formats).toHaveLength(11);
+    for (const format of formats) {
+      const image = format.querySelector("img");
+      expect(image?.getAttribute("src")).toMatch(/^\/images\/[a-z]+\.svg$/);
+      expect(image?.getAttribute("alt")).toBe("");
+      expect(format.textContent?.trim()).not.toBe("");
     }
   });
 
@@ -79,6 +140,21 @@ describe("renderLandingPage", () => {
     expect(row?.textContent).not.toContain("Hosted, proxy, group");
   });
 
+  it("shows virtual repository availability as accessible checkmarks for every registry", () => {
+    setupPage();
+
+    const row = Array.from(document.querySelectorAll(".comparison-table tr")).find((candidate) =>
+      candidate.querySelector("th")?.textContent === "Virtual repositories",
+    );
+    expect(row).toBeDefined();
+    const cells = Array.from(row!.querySelectorAll("td"));
+    expect(cells).toHaveLength(4);
+    for (const cell of cells) {
+      expect(cell.textContent).toBe("✓");
+      expect(cell.querySelector('[aria-label="Available"]')).not.toBeNull();
+    }
+  });
+
   it("renders a native dialog for screenshot previews", () => {
     setupPage();
 
@@ -96,7 +172,7 @@ describe("renderLandingPage", () => {
     expect(document.body.textContent).toContain("PostgreSQL");
 
     for (const packageType of siteContent.packageTypes) {
-      expect(document.body.textContent).toContain(packageType);
+      expect(document.body.textContent).toContain(packageType.name);
     }
   });
 
@@ -120,6 +196,16 @@ describe("renderLandingPage", () => {
     const wordmarkSvg = readFileSync("public/wordmark__image.svg", "utf8");
     expect(wordmarkSvg).toContain("flap-back-left");
     expect(wordmarkSvg).toContain("repeatCount=\"indefinite\"");
+  });
+
+  it("displays the pkgly name alongside the logo in the header and footer", () => {
+    setupPage();
+
+    for (const selector of [".site-header .wordmark", ".site-footer__brand"]) {
+      const brand = document.querySelector(selector);
+      expect(brand?.textContent?.trim()).toBe("pkgly");
+      expect(brand?.querySelector("img")?.getAttribute("src")).toBe("/wordmark__image.svg");
+    }
   });
 
   it("sets SEO metadata and structured data", () => {
